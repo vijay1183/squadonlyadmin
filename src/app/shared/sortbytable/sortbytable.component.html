@@ -1,0 +1,7 @@
+<div class="custom_select">
+  <label for="my_select" class="my_label">Filter by</label>
+  <select class="custom-select" [(ngModel)]="selectedOption" (change)="onChange()" id="my_select">
+    <option value="{{item}}" *ngFor="let item of fields">
+      {{item}} </option>
+  </select>
+</div>

@@ -1,0 +1,46 @@
+<section id="login">
+    <div class="container-fluid ps-md-0">
+        <div class="row g-0">
+            <div class="d-none d-md-flex col-md-4 col-lg-8 bg-image"></div>
+            <div class="col-md-8 col-lg-4">
+                <div class="login d-flex align-items-center py-5">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12 mx-auto" style="max-width: 420px">
+                                <!-- Sign In Form -->
+                                <div class="card border-1 border-primary bg-dark bg-opacity-25 shadow">
+                                    <div class="card-header border-0">
+                                        <div class="text-center my-3" [routerLink]="'/'" style="cursor: pointer;">
+                                            <img src="/assets/images/png/text-logo.png" alt="" class="img-fluid my-2"
+                                                style="max-width: 250px">
+                                            <h6 class="text-white"><small>Please login for an account.</small></h6>
+                                        </div>
+                                    </div>
+                                    <div class="card-body ">
+                                        <form [formGroup]="Form" autocomplete="off" (ngSubmit)="submit()">
+                                            <div class="form-floating mb-3">
+                                                <input type="text" class="form-control" id="floatingInput" autofocus
+                                                    formControlName="username" placeholder="" [ngClass]="{'error_bg': submitted && Form.get('username')!.hasError('required')}">
+                                                <label for="floatingInput" class="required">Username</label>
+                                            </div>
+                                            <div class="form-floating mb-3">
+                                                <input type="password" class="form-control" id="floatingPassword"
+                                                    formControlName="password" placeholder="" [ngClass]="{'error_bg': submitted && Form.get('password')!.hasError('required')}">
+                                                <label for="floatingPassword" class="required">Password</label>
+                                            </div>
+                                            <div class="d-grid mb-4">
+                                                <button type="submit" class="btn btn-primary btn-lg text-white px-5"
+                                                    [ngClass]="{'button--loading':success }"><span>LOGIN</span></button>
+                                            </div>
+                                        </form>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

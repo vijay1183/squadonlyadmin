@@ -1,0 +1,94 @@
+<div class="row">
+  <div class="col-sm-12">
+    <ul ngbNav #nav="ngbNav" [(activeId)]="active" [destroyOnHide]="false" class="nav-tabs"
+      (navChange)="navChanged($event)">
+      <li [ngbNavItem]="1" [destroyOnHide]="false">
+        <button ngbNavLink><b>Update status</b></button>
+        <ng-template ngbNavContent>
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-12">
+                  <div class="radio_button" *ngFor="let x of status">
+                    <input type="radio" [id]="x.Status_Name" [name]="'status'" [value]="x.Status_Name"
+                      [(ngModel)]="selectedOption" />
+                    <label class="btn btn-default" [for]="x.Status_Name">{{x.Status_Name}}</label>
+                  </div>
+                </div>
+                <div class="col-12 mt-3">
+                  <hr />
+                  <textarea placeholder="Enter your comments.." class="form-control border-0 border-secondary"
+                    style="height: 120px; box-shadow: none;" [(ngModel)]="comments"></textarea>
+                </div>
+                <div class="col-12 mt-3">
+                  <hr />
+                  <div class="text-center mx-auto">
+                    <button type="button" class="btn btn-success text-white px-5" (click)="submitComment()"
+                      [ngClass]="{'button--loading': submitting}"><span>Submit</span></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="2" [destroyOnHide]="false">
+        <button ngbNavLink><b>History</b></button>
+        <ng-template ngbNavContent>
+          <div class="card">
+            <div class="card-body">
+              <div class="table-responsive" *ngIf="showTable  && historyData.length > 0; else tableLoader">
+                <table class="table table-bordered" datatable [dtOptions]="CF.dtOptions">
+                  <thead class="table-primary">
+                    <tr>
+                      <ng-container *ngFor="let heading of columnDefs">
+                        <th class="text-capitalize"
+                          *ngIf="heading['field'].toLowerCase() !== 'jobrundate'; else dateColumn">
+                          {{heading.headerName}}
+                        </th>
+                        <ng-template #dateColumn>
+                          <th class="text-capitalize">
+                          {{heading.headerName}}
+                          </th>
+                        </ng-template>
+                      </ng-container>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let data of historyData">
+                      <ng-container *ngFor="let heading of columnDefs">
+                        <td attr.data-label="{{[heading.field]}}"
+                        *ngIf="heading['field'].toLowerCase() !== 'jobrundate'; else dateColumn">
+                          <span>{{data[heading.field]}}</span>
+                        </td>
+                        <ng-template #dateColumn>
+                          <td attr.data-label="{{[heading.field]}}">
+                               {{data[heading.field] | date}}
+                          </td>
+                      </ng-template>
+                      </ng-container>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="nav" class="mt-3"></div>
+  </div>
+</div>
+<ng-template #tableLoader>
+    <section class="table-loader" *ngIf="!showTable">
+      <div class="table-loader__header table-loader__row">
+        <div class="line" *ngFor="let item of [].constructor(4)"></div>
+      </div>
+      <div class="table-loader__body">
+        <div class="table-loader__row" *ngFor="let item of [].constructor(6)">
+          <div class="line" *ngFor="let item of [].constructor(4)"></div>
+        </div>
+      </div>
+    </section>
+    <h4 *ngIf="showTable">No History</h4>
+</ng-template>

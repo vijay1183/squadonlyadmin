@@ -1,1 +1,50 @@
-/* You can add global styles to this file, and also import other style files */
+@import "./assets/scss/variable";
+@import "./assets/scss/responsive";
+@import 'bootstrap/scss/bootstrap';
+#main_layout {
+    display: flex;
+  }
+.button--loading {
+    position: relative;
+    cursor: wait;
+    pointer-events: none;
+    outline: 0;
+
+    :before {
+        content: "";
+        margin: -13px 0 0 -13px;
+        width: 24px;
+        height: 24px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        -webkit-border-radius: 24px;
+        -webkit-background-clip: padding-box;
+        -moz-border-radius: 24px;
+        -moz-background-clip: padding;
+        border-radius: 24px;
+        background-clip: padding-box;
+        border: 2px solid $bg-white;
+        border-top-color: $theme-color;
+        animation: animation-rotate 750ms linear infinite;
+    }
+}
+
+.button--loading span,
+.button--loading:active span,
+.button--loading:hover span {
+    color: transparent;
+    text-shadow: none;
+}
+
+@keyframes animation-rotate {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.sidebar_overflow {
+    @include mobile {
+      overflow: hidden !important;
+    }
+  }

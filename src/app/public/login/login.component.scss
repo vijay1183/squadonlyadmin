@@ -1,0 +1,62 @@
+#login {
+    height: 100vh;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    overflow: auto;
+    // background: url('/assets/images/png/bg-pattern.png');
+    background-color: #E5A600;
+    // background: linear-gradient(to right, #E5A600, #ABC675);
+    background: linear-gradient(to right, #686868, #351805);
+
+    .login {
+        min-height: 100vh;
+    }
+
+    .bg-image {
+        // background-image: url('/assets/images/jpg/login-bg.jpg');
+
+        background: linear-gradient(to bottom, #0000001a, #000000a6), url('/assets/images/jpg/login-bg.jpg');
+
+        background-size: cover;
+        background-position: center;
+
+        // background-blend-mode: screen;
+        // background-color: #E5A600;
+    }
+
+    .login-heading {
+        font-weight: 300;
+    }
+
+    .btn-login {
+        font-size: 0.9rem;
+        letter-spacing: 0.05rem;
+        padding: 0.75rem 1rem;
+    }
+
+    /* Fallback for Edge
+-------------------------------------------------- */
+    @supports (-ms-ime-align: auto) {
+        .form-label-group>label {
+            display: none;
+        }
+
+        .form-label-group input::-ms-input-placeholder {
+            color: #777;
+        }
+    }
+
+    /* Fallback for IE
+    -------------------------------------------------- */
+    @media all and (-ms-high-contrast: none),
+    (-ms-high-contrast: active) {
+        .form-label-group>label {
+            display: none;
+        }
+
+        .form-label-group input:-ms-input-placeholder {
+            color: #777;
+        }
+    }
+}

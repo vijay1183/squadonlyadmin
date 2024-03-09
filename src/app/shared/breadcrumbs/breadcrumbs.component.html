@@ -1,0 +1,10 @@
+<div class="col-sm-12" id="breadcrumbs">
+  <ul>
+    <li [routerLink]="item.link.length > 0 ? [item.link] : [] " *ngFor="let item of breadcrumbs" [ngClass]="{'active': item.link.length === 0}">
+      <ng-container [ngSwitch]="item.title">         
+        <span class="text-capitalize" *ngSwitchDefault>{{item.title | lowercase}} </span>
+      </ng-container>
+
+    </li>
+  </ul>
+</div>

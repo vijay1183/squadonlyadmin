@@ -1,0 +1,46 @@
+<section id="sidebar" class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark sticky-top" [ngClass]="{'smallbar': (ToggleMenu$ | async)}">
+  <a href="/" class="d-flex align-items-center mb-3 mb-md-0 mx-auto text-white text-decoration-none logo">
+    <span>
+      <img src="/assets/images/png/text-logo.png" alt="" class="img-fluid my-2 text-logo" style="max-width: 125px">
+      <img src="/assets/images/png/favicon.png" alt="" class="img-fluid my-2 only-logo" style="max-width: 45px">
+    </span>
+  </a>
+  <hr>
+  <div class="ps-2 pb-3 user_info" *ngIf="user">   
+    <h6 class="mb-1"><small class="text-white text-opacity-50 ps-1">User</small></h6>
+    <h6 class="text-white ps-1">{{user.FirstName}} {{user.LastName}}</h6>
+    <hr>
+  </div>
+  <ul class="nav nav-pills flex-column mb-auto mt-0 mt-sm-3">
+    <li class="nav-item my-2">
+      <a routerLink="/dashboard" class="nav-link text-white" aria-current="page" routerLinkActive="active">        
+        <i class="icon me-3" style="-webkit-mask-image: url('../../../assets/images/png/dashboard.png')" title="Dashboard"></i>
+        <strong class="text">Dashboard</strong>
+      </a>
+    </li>
+    <li class="nav-item my-2">
+      <a routerLink="/podcast" class="nav-link text-white" routerLinkActive="active">        
+        <i class="icon me-3" style="-webkit-mask-image: url('../../../assets/images/png/podcast.png')" title="Podcast"></i>
+        <strong class="text">Podcast</strong>
+      </a>
+    </li>
+    <li class="nav-item my-2">
+      <a routerLink="/categories" class="nav-link text-white" routerLinkActive="active">        
+        <i class="icon me-3" style="-webkit-mask-image: url('../../../assets/images/png/category.png')" title="Categories"></i>
+        <strong class="text">Categories</strong>
+      </a>
+    </li>
+    <li class="nav-item my-2">
+      <a routerLink="/users" class="nav-link text-white" routerLinkActive="active">        
+        <i class="icon me-3" style="-webkit-mask-image: url('../../../assets/images/png/group.png')" title="Users"></i>
+        <strong class="text">Users</strong>
+      </a>
+    </li>
+  </ul>
+  <hr>
+  <button type="button" class="btn btn-link d-flex align-items-center text-white text-decoration-none logoff"
+    (click)="CF.logout()">
+    <i class="icon me-2" style="-webkit-mask-image: url('../../../assets/images/png/logoff.png')"></i>
+    <strong class="text">Logout</strong>
+  </button>
+</section>
