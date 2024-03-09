@@ -5,7 +5,7 @@
     flex-shrink: 0;
     height: 100vh;
     width: 250px;
-    background: linear-gradient(to bottom, rgb(12 12 12 / 85%), rgb(10 10 10)), url('/assets/images/jpg/login-bg.jpg');
+    background: linear-gradient(to bottom, rgb(12 12 12 / 75%), rgb(10 10 10)), url('/assets/images/jpg/login-bg.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -88,18 +88,5 @@
         }
     }
 
-    .logoff {
-        .icon {
-            background-color: rgba($color: #fff, $alpha: 0.75);
-            $size: 24px;
-            width: $size;
-            height: $size;
-            display: inline-flex;
-            -webkit-mask-size: cover;
-        }
-
-        strong.text {
-            line-height: 0;
-        }
-    }
+    
 }

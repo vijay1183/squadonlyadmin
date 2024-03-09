@@ -1,9 +1,11 @@
 @import "./assets/scss/variable";
 @import "./assets/scss/responsive";
 @import 'bootstrap/scss/bootstrap';
+
 #main_layout {
     display: flex;
-  }
+}
+
 .button--loading {
     position: relative;
     cursor: wait;
@@ -45,6 +47,16 @@
 
 .sidebar_overflow {
     @include mobile {
-      overflow: hidden !important;
+        overflow: hidden !important;
     }
-  }
+}
+
+// TABLES
+.responsiveTable {
+    table.dataTable thead th {
+        background: $theme-color;
+        color: #fff;
+        border-bottom: 1px solid $theme-color;
+        text-transform: capitalize !important;
+    }
+}

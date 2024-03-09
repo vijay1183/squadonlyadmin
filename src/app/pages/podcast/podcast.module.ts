@@ -2,7 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PodcastComponent } from './podcast.component';
 import { RouterModule, Routes } from '@angular/router';
-const routes: Routes = [{ path: '', component: PodcastComponent}];
+import { PodcastService } from './podcast.service';
+import { BreadcrumbsModule } from 'src/app/shared/breadcrumbs/breadcrumbs.module';
+import { DataTablesModule } from 'angular-datatables';
+const routes: Routes = [{ path: '', component: PodcastComponent, resolve: {service: PodcastService}}];
 
 
 @NgModule({
@@ -11,7 +14,9 @@ const routes: Routes = [{ path: '', component: PodcastComponent}];
   ],
   imports: [
     CommonModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    BreadcrumbsModule,
+    DataTablesModule
   ]
 })
 export class PodcastModule { }

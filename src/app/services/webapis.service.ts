@@ -7,7 +7,7 @@ import { map, mergeMap, of, switchMap, tap } from 'rxjs';
 })
 export class WebapiService {
   // private readonly localUrl = 'https://prdataqualitywebapi.azurewebsites.net/api';
-  private readonly prodUrl = `https://squad-api-dev.azurewebsites.net`;
+  private readonly prodUrl = `https://squad-api-dev.azurewebsites.net/api`;
   private WebApi = this.prodUrl;
   constructor(
     private Http: HttpClient,
@@ -29,7 +29,7 @@ export class WebapiService {
               this.CF.SetLS$(this.CF.Token, JSON.stringify(this.CF.Encrypt(token, this.CF.Token)));
               return token
             }),
-            mergeMap(() => this.Http.get<any>(`${this.prodUrl}/api/GetUserIdByToken`)),
+            mergeMap(() => this.Http.get<any>(`${this.prodUrl}/GetUserIdByToken`)),
             mergeMap(User => {              
               const url = `https://squad-api-dev.azurewebsites.net/api/GetUserById?UserId=${User['Data']['UserId']}`
               return this.Http.get<any>(url)
@@ -48,21 +48,19 @@ export class WebapiService {
   }
   public async getApis(
     servicepath: string,
-    cache: boolean = true,
-    userinfo = false
+    cache: boolean = true    
   ): Promise<any> {
     try {
-      return new Promise(async (resolve) => {
-        const user = (userinfo) ? await this.CF.userinfo() : null;
-        const url = (userinfo) ? `${this.WebApi}/${servicepath}?CarrierID=${user.CarrierID}` : `${this.WebApi}/${servicepath}`;
+      return new Promise(async (resolve) => {        
+        const url =  `${this.WebApi}/${servicepath}`;
         return this.Http.get<any>(url, {
           params: new HttpParams().set('cache', cache),
           responseType: 'json',
         })
           .pipe(
             map((d: any) => {
-              return d && d.Status === 1
-                ? { status: true, data: d.Data }
+              return d && d.Code === 200
+                ? { status: true, data: d }
                 : { status: false, error: (d.Message) ? d.Message : 'Something went wrong' };
             })
           )

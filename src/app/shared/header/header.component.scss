@@ -1,0 +1,14 @@
+.logoff {
+    .icon {
+        background-color: rgba($color: #fff, $alpha: 0.75);
+        $size: 24px;
+        width: $size;
+        height: $size;
+        display: inline-flex;
+        -webkit-mask-size: cover;
+    }
+
+    strong.text {
+        line-height: 0;
+    }
+}
