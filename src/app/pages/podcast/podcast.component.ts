@@ -1,9 +1,8 @@
 import { DatePipe } from '@angular/common';
-import { AfterViewInit, Component, OnInit, Renderer2 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { ADTSettings } from 'angular-datatables/src/models/settings';
-import { Subject, first } from 'rxjs';
-import { CommonService } from 'src/app/services/common.service';
+import { AfterViewInit, Component, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { DataTableDirective } from 'angular-datatables';
+import { Subscription } from 'rxjs';
+import { WebapiService } from 'src/app/services/webapis.service';
 @Component({
   selector: 'app-podcast',
   templateUrl: './podcast.component.html',
@@ -11,14 +10,9 @@ import { CommonService } from 'src/app/services/common.service';
   providers: [DatePipe]
 })
 export class PodcastComponent implements OnInit, AfterViewInit {
+  @ViewChild(DataTableDirective, { static: false }) datatableElement: any = DataTableDirective;
   public breadcrumbs = [{ title: 'Dashboard', link: '/dashboard' }, { title: 'Podcast', link: '' }];
-  public dtOptions: DataTables.Settings = {
-    responsive: true,
-    autoWidth: false,
-    pageLength: 10,
-    lengthMenu: [10, 20, 30, 40, 50]
-  };
-  public columnDefs: any = [
+  private columnDefs = [
     { "title": "Title", "data": "Title" },
     { "title": "Source", "data": "Source" },
     { "title": "Published Datetime", "data": "PublishedDatetime", ngPipeInstance: this.pipeDateInstance, ngPipeArgs: ['mediumDate', 'MMM d, y'] },
@@ -27,38 +21,76 @@ export class PodcastComponent implements OnInit, AfterViewInit {
     {
       title: 'Action',
       render: (data: any, type: any, full: any) => {
-        return `<button type="button" class="btn btn-sm btn-success text-white" data-podcast="${full.PodcastId}">View</button>`;
+        return `<button type="button" class="btn btn-sm btn-success text-white" data-podcast="${full.PodcastId}">Details</button>`;
       }
     }
   ];
+  public dtOptions: DataTables.Settings = {
+    pagingType: 'simple_numbers',
+    autoWidth: false,
+    searching: true,
+    pageLength: 10,
+    serverSide: true,
+    processing: true,
+    columns: this.columnDefs
+  };
+  private apiSubcription: Subscription | undefined;
+  public showTable: boolean = false;
+  public triggerTable: boolean = false;
   constructor(
+    private API: WebapiService,
     private renderer: Renderer2,
-    private ActivateRoute: ActivatedRoute,
-    public CF: CommonService,
     private pipeDateInstance: DatePipe
-  ) {
-  }
+  ) { }
   ngOnInit(): void {
-    this.ActivateRoute.data
-      .pipe(first())
-      .subscribe((response: any) => {
-        this.bindData(response['service']['podcasts']['data'])
-      })
+    this.dataTableAngular();
+  }
+  private dataTableAngular() {
+    this.triggerTable = false;
+    const that = this;
+    this.dtOptions['ajax'] = (dataTablesParameters: any, callback) => {
+      const typedValue = dataTablesParameters['search']['value'];
+      // this.showTable = (dataTablesParameters['start'] !== 0 && typedValue.length !== 0);
+      if (that.apiSubcription) {
+        that.apiSubcription.unsubscribe();
+      }
+      that.apiSubcription = that.API.getAPI(`GetPodCasts?SearchValue=${typedValue}&StartRowIndex=${(dataTablesParameters['start'] / dataTablesParameters['length']) + 1}&PageSize=${dataTablesParameters['length']}`)
+        .subscribe((resp: any) => {
+          callback({
+            recordsTotal: resp.TotalCount,
+            recordsFiltered: resp.TotalCount,
+            data: resp.Data
+          });
+          this.showTable = true;
+        },
+          error => {
+            alert('Something went wrong');
+          }
+        );
+    }
   }
   ngAfterViewInit(): void {
     this.renderer.listen('document', 'click', (event) => {
       if (event.target.hasAttribute("data-podcast")) {
         console.log(event.target.getAttribute("data-podcast"))
+        
+        // CALL TABLE TO REDRAW ROWS WITH NEW DATA
+        this.showTable = false;
+        this.triggerTable = true;
+        setTimeout(() => this.dataTableAngular(), 10);
+
       }
     });
+
   }
-  private bindData(response: any) {
-    if (response.Code === 200) {
-      const runJson: any = response.Data;
-      if (runJson.length > 0) {
-        this.dtOptions['columns'] = this.columnDefs;
-        this.dtOptions['data'] = runJson;
-      }
-    }
+  private dataInstance() {
+    this.datatableElement.dtInstance
+      .then((dtInstance: DataTables.Api) => {
+        console.log(dtInstance.page.info())
+        console.log(dtInstance)
+        dtInstance.destroy();
+        this.dataTableAngular();
+        dtInstance.draw();
+      });
   }
 }

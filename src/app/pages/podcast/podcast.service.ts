@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot } from "@angular/router";
 import { forkJoin, map } from "rxjs";
-import { CommonService } from "src/app/services/common.service";
 import { WebapiService } from "src/app/services/webapis.service";
 
 @Injectable({
@@ -9,8 +8,7 @@ import { WebapiService } from "src/app/services/webapis.service";
 })
 export class PodcastService {
     constructor(
-        private API: WebapiService,
-        private CF: CommonService
+        private API: WebapiService
     ) { }
     resolve(route: ActivatedRouteSnapshot) {
         return forkJoin([

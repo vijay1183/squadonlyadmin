@@ -136,7 +136,6 @@ export class CommonService {
         this.GotoURLParam('/');
         this.SetLS$(this.Token, JSON.stringify(null));
         this.SetLS$(this.TokenUser, JSON.stringify(null));
-        localStorage.removeItem('selectedItem');
       }
     });
   }

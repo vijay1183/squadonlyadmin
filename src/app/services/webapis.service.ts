@@ -30,7 +30,7 @@ export class WebapiService {
               return token
             }),
             mergeMap(() => this.Http.get<any>(`${this.prodUrl}/GetUserIdByToken`)),
-            mergeMap(User => {              
+            mergeMap(User => {
               const url = `https://squad-api-dev.azurewebsites.net/api/GetUserById?UserId=${User['Data']['UserId']}`
               return this.Http.get<any>(url)
             }),
@@ -48,11 +48,11 @@ export class WebapiService {
   }
   public async getApis(
     servicepath: string,
-    cache: boolean = true    
+    cache: boolean = true
   ): Promise<any> {
     try {
-      return new Promise(async (resolve) => {        
-        const url =  `${this.WebApi}/${servicepath}`;
+      return new Promise(async (resolve) => {
+        const url = `${this.WebApi}/${servicepath}`;
         return this.Http.get<any>(url, {
           params: new HttpParams().set('cache', cache),
           responseType: 'json',
@@ -66,7 +66,16 @@ export class WebapiService {
           )
           .subscribe({
             next: (r: any) => resolve(r),
-            error: () => resolve({ status: false, error: 'Something went wrong' })
+            error: (err) => {
+              if (err.status === 401) {
+                this.CF.GotoURLParam('/');
+                this.CF.SetLS$(this.CF.Token, JSON.stringify(null));
+                this.CF.SetLS$(this.CF.TokenUser, JSON.stringify(null));
+                this.CF.SwalError('Session Expired', 'Error!')
+                return
+              }
+              return resolve({ status: false, error: 'Something went wrong' })
+            }
           });
       });
     } catch (error) {
@@ -94,5 +103,10 @@ export class WebapiService {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  public getAPI(servicepath: string) {
+    const url = `${this.WebApi}/${servicepath}`;
+    return this.Http.get<any>(url, { responseType: 'json' })
   }
 }

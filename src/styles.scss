@@ -51,6 +51,12 @@
     }
 }
 
+.dnone {
+    visibility: hidden;
+    opacity: 0;
+    height: 0;
+}
+
 // TABLES
 .responsiveTable {
     table.dataTable thead th {
