@@ -42,7 +42,7 @@ export class LoginComponent {
             if (r.status) {
               this.CF.SetLS$(this.CF.TokenUser, JSON.stringify(this.CF.Encrypt(r.data, this.CF.TokenUser)));
               this.Form.reset();
-              this.CF.GotoURLParam('/dashboard') ;
+              this.CF.GotoURL('/dashboard') ;
               this.submitted = false;
               return
             }

@@ -29,6 +29,7 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
     lengthMenu: [10, 20, 30, 40, 50],
     serverSide: true,
     processing: true,
+    ordering: false,
     columns: this.columnDefs,
     dom: 'ltipr'
   };

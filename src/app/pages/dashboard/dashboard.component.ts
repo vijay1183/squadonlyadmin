@@ -9,11 +9,7 @@ import { CommonService } from 'src/app/services/common.service';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  public today = new Date();
-  public active = 1;
-  public latestRuns: any;
-  public myFollowups: any;
-  public myResolved: any;
+ 
   constructor(
     private ActivateRoute: ActivatedRoute,
     public CF: CommonService

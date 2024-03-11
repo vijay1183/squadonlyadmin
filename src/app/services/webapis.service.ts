@@ -68,13 +68,16 @@ export class WebapiService {
             next: (r: any) => resolve(r),
             error: (err) => {
               if (err.status === 401) {
-                this.CF.GotoURLParam('/');
+                this.CF.GotoURL('/');
                 this.CF.SetLS$(this.CF.Token, JSON.stringify(null));
                 this.CF.SetLS$(this.CF.TokenUser, JSON.stringify(null));
                 this.CF.SwalError('Session Expired', 'Error!')
                 return
               }
-              return resolve({ status: false, error: 'Something went wrong' })
+              console.log(err?.error)
+              const error = (err?.error?.Message) ? err?.error.Message : 'Something went wrong';
+              this.CF.SwalError(error, 'Oops!');
+              return resolve({ status: false, error })
             }
           });
       });

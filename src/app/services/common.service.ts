@@ -22,7 +22,7 @@ export class CommonService {
     displayLength: 25,
     responsive: true
   };
-  
+
   private modalReference: any;
   public renderer!: Renderer2;
   // public masterOptions: DataTables.Settings = {
@@ -133,7 +133,7 @@ export class CommonService {
       cancelButtonText: "No, Continue",
     }).then((result: any) => {
       if (result.value) {
-        this.GotoURLParam('/');
+        this.GotoURL('/');
         this.SetLS$(this.Token, JSON.stringify(null));
         this.SetLS$(this.TokenUser, JSON.stringify(null));
       }
@@ -146,9 +146,18 @@ export class CommonService {
   public showError(msg: string, heading = "Error") {
     this.toastr.error(msg, heading);
   }
-  public GotoURLParam(url: string) {
+  public GotoURL(url: string) {
     this.router.navigateByUrl(url);
   }
+
+  public GotoURLQueryParam(path: string, queryParams: {}) {
+    this.router.navigate([path], { queryParams: queryParams });
+  }
+
+  public GotoURLParam(path: string, param: string) {
+    this.router.navigate([path, param]);
+  }
+
   public async userinfo(): Promise<any> {
     try {
       return new Promise((resolve, reject) => {

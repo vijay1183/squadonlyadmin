@@ -11,9 +11,9 @@ const routes: Routes = [
     canActivate: [authGuard],
     children: [
       { path: 'dashboard', loadChildren: () => import('./pages/dashboard/dashboard.module').then(m => m.DashboardModule) },
-      // { path: 'run/:id', loadChildren: () => import('./pages/run/run.module').then(m => m.RunModule) },
       // { path: 'setting', redirectTo: '/setting/DataSource', pathMatch: 'full' },
       { path: 'podcast', loadChildren: () => import('./pages/podcast/podcast.module').then(m => m.PodcastModule) },
+      { path: 'podcast/:id', loadChildren: () => import('./pages/podcastdetails/podcastdetails.module').then(m => m.PodcastdetailsModule) },
       { path: 'categories', loadChildren: () => import('./pages/categories/categories.module').then(m => m.CategoriesModule) },
       { path: 'users', loadChildren: () => import('./pages/users/users.module').then(m => m.UsersModule) }
     ]

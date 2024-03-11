@@ -16,32 +16,25 @@ export class CategoriesComponent implements OnInit, AfterViewInit, OnDestroy {
     { "title": "Category Name", "data": "CategoryName" },
     { "title": "Category Code", "data": "CategoryCode" },
     { "title": "IsActive", "data": "IsActive" },
-    { "title": "IsDeleted", "data": "IsDeleted" },
-    { "title": "Total Count", "data": "TotalCount" }
-    // {
-    //   title: 'Action',
-    //   render: (data: any, type: any, full: any) => {
-    //     return `<button type="button" class="btn btn-sm btn-success text-white" data-podcast="${full.PodcastId}">Details</button>`;
-    //   }
-    // }
+    { "title": "IsDeleted", "data": "IsDeleted" }
   ];
   public dtOptions: DataTables.Settings = {
     pagingType: 'simple_numbers',
+    ordering: false,
     autoWidth: false,
     searching: true,
     pageLength: 10,
     lengthMenu: [10, 20, 30, 40, 50],
     serverSide: true,
     processing: true,
-    columns: this.columnDefs,    
+    columns: this.columnDefs,
     dom: 'ltipr'
   };
   private apiSubcription: Subscription | undefined;
   public showTable: boolean = false;
   constructor(
     private API: WebapiService,
-    private renderer: Renderer2,
-    // private pipeDateInstance: DatePipe
+    private renderer: Renderer2
   ) { }
   ngOnInit(): void {
     const that = this;
@@ -70,12 +63,6 @@ export class CategoriesComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log(event.target.getAttribute("data-podcast"))
       }
     });
-    // this.datatableElement.dtInstance
-    //   .then((dtInstance: DataTables.Api) => {
-    //     console.log(dtInstance.page.info())
-    //     console.log(dtInstance)
-    //     // dtInstance.destroy();
-    //   });
   }
   ngOnDestroy() {
     if (this.apiSubcription) {

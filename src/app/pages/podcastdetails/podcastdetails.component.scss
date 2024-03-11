@@ -1,0 +1,26 @@
+#podcastdetails {
+    .images {
+        background-color: var(--bs-body-bg);
+        border: var(--bs-border-width) dotted var(--bs-border-color);
+        .main_image {
+            width: 400px;
+        }
+    }
+    .product {
+        background-color: #eee
+    }
+    .brand {
+        font-size: 13px
+    }
+    .about {
+        font-size: 14px;
+    }
+    .play_btn {
+        cursor: pointer;
+        img {
+            $size: 75px;
+            width: $size;
+            height: $size;
+        }
+    }
+}

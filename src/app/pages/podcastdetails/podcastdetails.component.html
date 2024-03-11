@@ -1,0 +1,46 @@
+<section id="podcastdetails">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <breadcrumbs [breadcrumbs]="breadcrumbs"></breadcrumbs>
+            </div>
+            <div class="col-md-11">
+                <div class="card border-0">
+                    <div class="row py-4">
+                        <div class="col-md-4">
+                            <div class="images text-center p-3">
+                                <img [src]="podCast['ThumbnailImageName']" class="img-fluid main_image" /> 
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="product p-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center"> 
+                                        <span class="ml-1 cursor" routerLink="/podcast">Back</span> 
+                                    </div>                                         
+                                </div>
+                                <div class="mt-4 mb-3"> <span class="text-uppercase text-muted brand">{{podCast['Source']}}</span>
+                                    <h5 class="text-uppercase">{{podCast['Title']}}</h5>
+                                    <div class="price d-flex flex-row align-items-center"> 
+                                        <div class="ml-2 text-muted"> 
+                                            <small>Date: </small>
+                                            <span>{{podCast['UpdatedDatetime'] | date}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="about" [innerHTML]="podCast['Description']"></p>
+                                <div class="play_btn text-end" (click)="playPodCast(podCast)" title="Play/Pause Postcast">
+                                    <img src="./../../../assets/images/svg/play-button.svg" alt="play" *ngIf="!podCast.playing; else pause" />
+                                    <ng-template #pause>
+                                        <img src="./../../../assets/images/svg/pause-button.svg" alt="pause" />
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<app-audioplayer [PodcastURL]="selectedPodcastURL" *ngIf="selectedPodcastURL"></app-audioplayer>
