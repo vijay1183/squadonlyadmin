@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { Subscription } from 'rxjs';
 import { WebapiService } from 'src/app/services/webapis.service';
@@ -7,7 +7,7 @@ import { WebapiService } from 'src/app/services/webapis.service';
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss']
 })
-export class UsersComponent implements OnInit, AfterViewInit {
+export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(DataTableDirective, { static: false }) datatableElement: any = DataTableDirective;
   public breadcrumbs = [{ title: 'Dashboard', link: '/dashboard' }, { title: 'Users', link: '' }];
 
@@ -26,6 +26,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
     autoWidth: false,
     searching: true,
     pageLength: 10,
+    lengthMenu: [10, 20, 30, 40, 50],
     serverSide: true,
     processing: true,
     columns: this.columnDefs,
@@ -67,5 +68,10 @@ export class UsersComponent implements OnInit, AfterViewInit {
     //     console.log(dtInstance)
     //     dtInstance.destroy();
     //   });
+  }
+  ngOnDestroy() {
+    if (this.apiSubcription) {
+      this.apiSubcription.unsubscribe();
+    }
   }
 }

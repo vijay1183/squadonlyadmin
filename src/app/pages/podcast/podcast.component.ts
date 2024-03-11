@@ -15,9 +15,9 @@ export class PodcastComponent implements OnInit, AfterViewInit, OnDestroy {
   private columnDefs = [
     { "title": "Title", "data": "Title" },
     { "title": "Source", "data": "Source" },
-    { "title": "Published Datetime", "data": "PublishedDatetime", ngPipeInstance: this.pipeDateInstance, ngPipeArgs: ['mediumDate', 'MMM d, y'] },
-    { "title": "Created Datetime", "data": "CreatedDatetime", ngPipeInstance: this.pipeDateInstance, ngPipeArgs: ['mediumDate', 'MMM d, y'] },
-    { "title": "Updated Datetime", "data": "UpdatedDatetime", ngPipeInstance: this.pipeDateInstance, ngPipeArgs: ['mediumDate', 'MMM d, y'] },
+    { "title": "Published", "data": "PublishedDatetime", ngPipeInstance: this.pipeDateInstance, ngPipeArgs: ['mediumDate', 'MMM d, y'] },
+    { "title": "Created", "data": "CreatedDatetime", ngPipeInstance: this.pipeDateInstance, ngPipeArgs: ['mediumDate', 'MMM d, y'] },
+    { "title": "Updated", "data": "UpdatedDatetime", ngPipeInstance: this.pipeDateInstance, ngPipeArgs: ['mediumDate', 'MMM d, y'] },
     {
       title: 'Action',
       render: (data: any, type: any, full: any) => {
@@ -26,14 +26,15 @@ export class PodcastComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   ];
   public dtOptions: DataTables.Settings = {
+    columns: this.columnDefs,
     pagingType: 'simple_numbers',
-    autoWidth: false,
-    searching: true,
     lengthMenu: [10, 20, 30, 40, 50],
     pageLength: 10,
+    autoWidth: false,
+    ordering: false,    
+    searching: true,
     serverSide: true,
-    processing: true,
-    columns: this.columnDefs
+    processing: true
   };
   private apiSubcription: Subscription | undefined;
   public showTable: boolean = false;

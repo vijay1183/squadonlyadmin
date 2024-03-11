@@ -5,21 +5,25 @@
                 <breadcrumbs [breadcrumbs]="breadcrumbs"></breadcrumbs>
             </div>
             <div class="col-sm-12 py-3">
-                <div class="responsiveTable w-100" [ngClass]="{'dnone': !showTable}" *ngIf="!triggerTable">
-                    <table datatable [dtOptions]="dtOptions" class="table table-bordered"></table>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="responsiveTable w-100" [ngClass]="{'dnone': !showTable}" *ngIf="!triggerTable">
+                            <table datatable [dtOptions]="dtOptions" class="table table-bordered"></table>
+                        </div>
+                        <ng-container *ngIf="!showTable">
+                            <section class="table-loader">
+                                <div class="table-loader__header table-loader__row">
+                                    <div class="line" *ngFor="let item of [].constructor(6)"></div>
+                                </div>
+                                <div class="table-loader__body">
+                                    <div class="table-loader__row" *ngFor="let item of [].constructor(5)">
+                                        <div class="line" *ngFor="let item of [].constructor(6)"></div>
+                                    </div>
+                                </div>
+                            </section>
+                        </ng-container>
+                    </div>
                 </div>
-                <ng-container *ngIf="!showTable">
-                    <section class="table-loader">
-                        <div class="table-loader__header table-loader__row">
-                            <div class="line" *ngFor="let item of [].constructor(6)"></div>
-                        </div>
-                        <div class="table-loader__body">
-                            <div class="table-loader__row" *ngFor="let item of [].constructor(5)">
-                                <div class="line" *ngFor="let item of [].constructor(6)"></div>
-                            </div>
-                        </div>
-                    </section>
-                </ng-container>
             </div>
         </div>
     </div>

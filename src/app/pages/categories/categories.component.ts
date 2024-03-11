@@ -1,5 +1,5 @@
 // import { DatePipe } from '@angular/common';
-import { AfterViewInit, Component, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { Subscription } from 'rxjs';
 import { WebapiService } from 'src/app/services/webapis.service';
@@ -9,7 +9,7 @@ import { WebapiService } from 'src/app/services/webapis.service';
   styleUrls: ['./categories.component.scss'],
   // providers: [DatePipe]
 })
-export class CategoriesComponent implements OnInit, AfterViewInit {
+export class CategoriesComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(DataTableDirective, { static: false }) datatableElement: any = DataTableDirective;
   public breadcrumbs = [{ title: 'Dashboard', link: '/dashboard' }, { title: 'Categories', link: '' }];
   private columnDefs = [
@@ -30,6 +30,7 @@ export class CategoriesComponent implements OnInit, AfterViewInit {
     autoWidth: false,
     searching: true,
     pageLength: 10,
+    lengthMenu: [10, 20, 30, 40, 50],
     serverSide: true,
     processing: true,
     columns: this.columnDefs,    
@@ -75,5 +76,10 @@ export class CategoriesComponent implements OnInit, AfterViewInit {
     //     console.log(dtInstance)
     //     // dtInstance.destroy();
     //   });
+  }
+  ngOnDestroy() {
+    if (this.apiSubcription) {
+      this.apiSubcription.unsubscribe();
+    }
   }
 }
