@@ -32,8 +32,8 @@ export class CategoriesComponent implements OnInit, AfterViewInit {
     pageLength: 10,
     serverSide: true,
     processing: true,
-    columns: this.columnDefs,
-    dom: 'liBrtp'
+    columns: this.columnDefs,    
+    dom: 'ltipr'
   };
   private apiSubcription: Subscription | undefined;
   public showTable: boolean = false;

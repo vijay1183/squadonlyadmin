@@ -29,7 +29,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
     serverSide: true,
     processing: true,
     columns: this.columnDefs,
-    dom: 'liBrtp'
+    dom: 'ltipr'
   };
   private apiSubcription: Subscription | undefined;
   public showTable: boolean = false;
@@ -43,7 +43,7 @@ export class UsersComponent implements OnInit, AfterViewInit {
       if (that.apiSubcription) {
         that.apiSubcription.unsubscribe();
       }
-      that.apiSubcription = that.API.getAPI(`GetUsers?StartRowIndex=${dataTablesParameters['start'] / dataTablesParameters['length']}&PageSize=${dataTablesParameters['length']}`)
+      that.apiSubcription = that.API.getAPI(`GetUsers?StartRowIndex=${(dataTablesParameters['start'] / dataTablesParameters['length']) + 1}&PageSize=${dataTablesParameters['length']}`)
         .subscribe(resp => {
           callback({
             recordsTotal: resp.TotalCount,

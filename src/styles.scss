@@ -65,4 +65,14 @@
         border-bottom: 1px solid $theme-color;
         text-transform: capitalize !important;
     }
+
+    .dataTables_processing {
+        border: none;
+        background: #fff;
+        box-shadow: 0px 6px 30px #ccc;
+    }
+
+    .dataTables_processing>div:last-child>div {
+        background: $theme-color;
+    }
 }

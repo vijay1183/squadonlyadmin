@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { AfterViewInit, Component, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { Subscription } from 'rxjs';
 import { WebapiService } from 'src/app/services/webapis.service';
@@ -9,7 +9,7 @@ import { WebapiService } from 'src/app/services/webapis.service';
   styleUrls: ['./podcast.component.scss'],
   providers: [DatePipe]
 })
-export class PodcastComponent implements OnInit, AfterViewInit {
+export class PodcastComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(DataTableDirective, { static: false }) datatableElement: any = DataTableDirective;
   public breadcrumbs = [{ title: 'Dashboard', link: '/dashboard' }, { title: 'Podcast', link: '' }];
   private columnDefs = [
@@ -29,6 +29,7 @@ export class PodcastComponent implements OnInit, AfterViewInit {
     pagingType: 'simple_numbers',
     autoWidth: false,
     searching: true,
+    lengthMenu: [10, 20, 30, 40, 50],
     pageLength: 10,
     serverSide: true,
     processing: true,
@@ -73,7 +74,7 @@ export class PodcastComponent implements OnInit, AfterViewInit {
     this.renderer.listen('document', 'click', (event) => {
       if (event.target.hasAttribute("data-podcast")) {
         console.log(event.target.getAttribute("data-podcast"))
-        
+
         // CALL TABLE TO REDRAW ROWS WITH NEW DATA
         this.showTable = false;
         this.triggerTable = true;
@@ -92,5 +93,10 @@ export class PodcastComponent implements OnInit, AfterViewInit {
         this.dataTableAngular();
         dtInstance.draw();
       });
+  }
+  ngOnDestroy() {
+    if (this.apiSubcription) {
+      this.apiSubcription.unsubscribe();
+    }
   }
 }

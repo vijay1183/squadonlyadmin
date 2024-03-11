@@ -29,11 +29,11 @@ export class WebapiService {
               this.CF.SetLS$(this.CF.Token, JSON.stringify(this.CF.Encrypt(token, this.CF.Token)));
               return token
             }),
-            mergeMap(() => this.Http.get<any>(`${this.prodUrl}/GetUserIdByToken`)),
-            mergeMap(User => {
-              const url = `https://squad-api-dev.azurewebsites.net/api/GetUserById?UserId=${User['Data']['UserId']}`
-              return this.Http.get<any>(url)
-            }),
+            mergeMap(() => this.Http.get<any>(`${this.prodUrl}/GetUserDetailsByToken`)),
+            // mergeMap(User => {
+            //   const url = `https://squad-api-dev.azurewebsites.net/api/GetUserById?UserId=${User['Data']['UserId']}`
+            //   return this.Http.get<any>(url)
+            // }),
             map((d: any) => {
               return d && d.Code === 200
                 ? { status: true, data: d.Data }
