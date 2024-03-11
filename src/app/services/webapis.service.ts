@@ -85,22 +85,33 @@ export class WebapiService {
       console.log(error);
     }
   }
-  public async postApis(servicepath: string, payload: any, userinfo = false): Promise<any> {
+  public async postApis(servicepath: string, payload: any): Promise<any> {
     try {
       return new Promise(async (resolve) => {
-        const user = (userinfo) ? await this.CF.userinfo() : null;
-        const url = (userinfo) ? `${this.WebApi}/${servicepath}?loggedInUserID=${user.UserID}` : `${this.WebApi}/${servicepath}`;
+        const url = `${this.WebApi}/${servicepath}`;
         return this.Http.post<any>(url, payload)
           .pipe(
             map((d: any) => {
-              return d && d.Status === 1
-                ? { status: true, data: d.Message, id: (d.Data) ? d.Data : 0 }
-                : { status: false, error: d.Message };
+              return d && d.Code === 200
+                ? { status: true, data: d }
+                : { status: false, error: (d.Message) ? d.Message : 'Something went wrong' };
             })
           )
           .subscribe({
             next: (r: any) => resolve(r),
-            error: () => resolve({ status: false, error: 'Something went wrong' })
+            error: (err) => {
+              if (err.status === 401) {
+                this.CF.GotoURL('/');
+                this.CF.SetLS$(this.CF.Token, JSON.stringify(null));
+                this.CF.SetLS$(this.CF.TokenUser, JSON.stringify(null));
+                this.CF.SwalError('Session Expired', 'Error!')
+                return
+              }
+              console.log(err?.error)
+              const error = (err?.error?.Message) ? err?.error.Message : 'Something went wrong';
+              this.CF.SwalError(error, 'Oops!');
+              return resolve({ status: false, error })
+            }
           });
       });
     } catch (error) {
@@ -108,6 +119,39 @@ export class WebapiService {
     }
   }
 
+  public async putApis(servicepath: string, payload: any): Promise<any> {
+    try {
+      return new Promise(async (resolve) => {
+        const url = `${this.WebApi}/${servicepath}`;
+        return this.Http.put<any>(url, payload)
+          .pipe(
+            map((d: any) => {
+              return d && d.Code === 200
+                ? { status: true, data: d }
+                : { status: false, error: (d.Message) ? d.Message : 'Something went wrong' };
+            })
+          )
+          .subscribe({
+            next: (r: any) => resolve(r),
+            error: (err) => {
+              if (err.status === 401) {
+                this.CF.GotoURL('/');
+                this.CF.SetLS$(this.CF.Token, JSON.stringify(null));
+                this.CF.SetLS$(this.CF.TokenUser, JSON.stringify(null));
+                this.CF.SwalError('Session Expired', 'Error!')
+                return
+              }
+              console.log(err?.error)
+              const error = (err?.error?.Message) ? err?.error.Message : 'Something went wrong';
+              this.CF.SwalError(error, 'Oops!');
+              return resolve({ status: false, error })
+            }
+          });
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
   public getAPI(servicepath: string) {
     const url = `${this.WebApi}/${servicepath}`;
     return this.Http.get<any>(url, { responseType: 'json' })

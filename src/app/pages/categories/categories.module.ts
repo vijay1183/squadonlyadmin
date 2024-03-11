@@ -4,6 +4,7 @@ import { CategoriesComponent } from './categories.component';
 import { RouterModule, Routes } from '@angular/router';
 import { DataTablesModule } from 'angular-datatables';
 import { BreadcrumbsModule } from 'src/app/shared/breadcrumbs/breadcrumbs.module';
+import { ReactiveFormsModule } from '@angular/forms';
 const routes: Routes = [{ path: '', component: CategoriesComponent}];
 
 @NgModule({
@@ -14,7 +15,8 @@ const routes: Routes = [{ path: '', component: CategoriesComponent}];
     CommonModule,
     RouterModule.forChild(routes),
     BreadcrumbsModule,
-    DataTablesModule
+    DataTablesModule,
+    ReactiveFormsModule
   ]
 })
 export class CategoriesModule { }

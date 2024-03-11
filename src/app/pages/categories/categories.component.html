@@ -4,10 +4,12 @@
             <div class="col-sm-12">
                 <breadcrumbs [breadcrumbs]="breadcrumbs"></breadcrumbs>
             </div>
-            <div class="col-sm-12 py-3">
+        </div>
+        <div class="row py-3">
+            <div class="col-sm-9">
                 <div class="card">
                     <div class="card-body">
-                        <div class="responsiveTable w-100" [ngClass]="{'dnone': !showTable}">
+                        <div class="responsiveTable w-100" [ngClass]="{'dnone': !showTable}" *ngIf="!triggerTable">
                             <table datatable [dtOptions]="dtOptions" class="table table-bordered"></table>
                         </div>
                         <ng-container *ngIf="!showTable">
@@ -23,6 +25,58 @@
                             </section>
                         </ng-container>
                     </div>
+                </div>
+            </div>
+            <div class="col-sm-3" *ngIf="Form">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0 py-2">
+                          <span *ngIf="isUpdate">UPDATE </span>
+                          <span *ngIf="!isUpdate">ADD NEW </span>
+                          <span>ENTRY</span>
+                        </h5>
+                      </div>
+                    <div class="card-body">
+                        <form class="grid-form" [formGroup]="Form" autocomplete="false"
+                        [ngClass]="{ 'loading_form': FormLoading}">
+                        <fieldset>
+                            <div data-row-span="1">
+                                <div data-field-span="1"
+                                    [ngClass]="{'error_bg': submitted && Form.get('podcastCategoryName')!.hasError('required')}">
+                                    <label class="required">Category Name</label>
+                                    <div class="icon-container">
+                                        <input type="text" formControlName="podcastCategoryName" />
+                                        <i class="loader"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div data-row-span="1" class="border-bottom-0">
+                                <div data-field-span="1"
+                                    [ngClass]="{'error_bg': submitted && Form.get('isActive')!.hasError('required')}">
+                                    <label class="required">Active</label>
+                                    <div class="form-check-inline" *ngFor="let y of [true,false]">
+                                        <div class="icon-container">
+                                            <label>
+                                                <input type="radio" [value]='y' formControlName="isActive">
+                                                <span class="cursor radio_label"> {{y}}</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        </form>
+                    </div>
+                    <div class="card-footer text-center">
+                        <button type="button" class="btn btn-danger mx-2" (click)="cancel()" *ngIf="isUpdate">Cancel</button>
+                        <button type="button" (click)="onSubmit()" class="btn text-white px-4"
+                          [ngClass]="{'button--loading': success, 'btn-success': isUpdate, 'btn-primary': !isUpdate}">
+                          <span *ngIf="!isUpdate">&nbsp;&nbsp;Add&nbsp;&nbsp;</span>
+                          <span *ngIf="isUpdate">Update</span>
+                        </button>
+                      </div>
                 </div>
             </div>
         </div>
