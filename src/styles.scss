@@ -65,7 +65,9 @@
         border-bottom: 1px solid $theme-color;
         text-transform: capitalize !important;
     }
-
+    table.dataTable tbody tr.deactivated td {
+        background-color: rgb(248 215 218 / 30%);
+    }
     .dataTables_processing {
         border: none;
         background: #fff;

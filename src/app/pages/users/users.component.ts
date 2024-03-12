@@ -1,25 +1,32 @@
+import { DatePipe } from '@angular/common';
 import { AfterViewInit, Component, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { Subscription } from 'rxjs';
 import { WebapiService } from 'src/app/services/webapis.service';
+import { BooleanpipePipe } from './booleanpipe.pipe';
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss']
+  styleUrls: ['./users.component.scss'],
+  providers: [DatePipe, BooleanpipePipe]
 })
 export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(DataTableDirective, { static: false }) datatableElement: any = DataTableDirective;
   public breadcrumbs = [{ title: 'Dashboard', link: '/dashboard' }, { title: 'Users', link: '' }];
-
   private columnDefs = [
-    { "title": "FirstName", "data": "FirstName" },
-    { "title": "LastName", "data": "LastName" },
-    { "title": "RoleId", "data": "RoleId" },
-    { "title": "IsActive", "data": "IsActive" },
-    { "title": "MobileNumber", "data": "MobileNumber" },
+    { "title": "Role", "data": "RoleName" },
+    {
+      title: 'Name',
+      render: (data: any, type: any, full: any) => {
+        return `${full.FirstName} ${full.LastName}`;
+      }
+    },
     { "title": "Email", "data": "Email" },
+    { "title": "Mobile", "data": "MobileNumber" },
     { "title": "UserName", "data": "UserName" },
     { "title": "Password", "data": "Password" },
+    { "title": "Created Date", "data": "CreatedDatetime", ngPipeInstance: this.pipeDateInstance, ngPipeArgs: ['mediumDate', 'MMM d, y'] },
+    { "title": "IsActive", "data": "IsActive", ngPipeInstance: this.pipeBooleanInstance }
   ];
   public dtOptions: DataTables.Settings = {
     pagingType: 'simple_numbers',
@@ -37,6 +44,8 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
   public showTable: boolean = false;
   constructor(
     private API: WebapiService,
+    private pipeDateInstance: DatePipe,
+    private pipeBooleanInstance: BooleanpipePipe,
     private renderer: Renderer2
   ) { }
   ngOnInit(): void {
@@ -55,7 +64,14 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
           this.showTable = true;
         });
     };
-
+    this.dtOptions['rowCallback'] = (row, data: any) => {      
+      if(data['IsActive'] === 0){
+        $(row).addClass('deactivated');
+      }
+    }
+  }
+  private IsActive(evt: any) {
+    console.log(evt)
   }
   ngAfterViewInit(): void {
     this.renderer.listen('document', 'click', (event) => {

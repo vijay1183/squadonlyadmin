@@ -1,0 +1,46 @@
+<IfModule mod_rewrite.c>
+
+SetEnvIf Origin "^http(s)?://(.+\.)?(1xyz\.com|2xyz\.com)$" REQUEST_ORIGIN=$0
+
+Header set Access-Control-Allow-Origin "*"
+
+Header add Access-Control-Allow-Methods "PUT, GET, POST, DELETE, OPTIONS"
+
+Header add Access-Control-Allow-Headers "x-test-header, Origin, X-Requested-With, Content-Type, Accept"
+
+
+
+
+
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+
+RewriteCond %{REQUEST_FILENAME} -d [OR]
+
+RewriteCond %{REQUEST_URI} ^/services/
+
+RewriteRule ^ - [L]
+
+
+
+# If the requested resource doesn't exist, use index.html
+
+RewriteRule ^ /index.html
+
+RewriteCond %{HTTPS} off
+# First rewrite to HTTPS:
+# Don't put www. here. If it is already there it will be included, if not
+# the subsequent rule will catch it.
+RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# Now, rewrite any request to the wrong domain to use www.
+# [NC] is a case-insensitive match
+RewriteCond %{HTTP_HOST} !^www\. [NC]
+RewriteRule .* https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+</IfModule>
+
+
+
+
+
