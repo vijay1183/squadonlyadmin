@@ -6,6 +6,8 @@ import { PodcastDetailsService } from './podcastdetails.service';
 import { BreadcrumbsModule } from 'src/app/shared/breadcrumbs/breadcrumbs.module';
 import { AudioplayerModule } from 'src/app/shared/audioplayer/audioplayer.module';
 import { SanitizerModule } from 'src/app/pipes/sanitizer/sanitizer.module';
+import { ChartsModule } from 'src/app/shared/charts/charts/charts.module';
+import { CommentsModule } from 'src/app/shared/comments/comments/comments.module';
 const routes: Routes = [{
   path: '',
   component: PodcastdetailsComponent,
@@ -22,7 +24,9 @@ const routes: Routes = [{
     RouterModule.forChild(routes),
     BreadcrumbsModule,
     AudioplayerModule,
-    SanitizerModule
+    SanitizerModule,
+    ChartsModule,
+    CommentsModule
   ]
 })
 export class PodcastdetailsModule { }

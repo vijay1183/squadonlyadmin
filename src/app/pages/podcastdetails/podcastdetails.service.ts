@@ -12,11 +12,17 @@ export class PodcastDetailsService {
     resolve(route: ActivatedRouteSnapshot) {
         const PodcastId = route.params['id'];
         return forkJoin([
-            this.API.getApis(`GetPodCastById?PodcastId=${PodcastId}`, false)
+            this.API.getApis(`GetPodCastById?PodcastId=${PodcastId}`, false),
+            this.API.getApis(`GetPodcastSummayByPodcastId?PodcastId=${PodcastId}`, false),
+            this.API.getApis(`GetPodcastViewCountByPodcastIdForGraph?PodcastId=${PodcastId}`, false),
+            this.API.getApis(`GetPodcastCommentsAndReplies?PodcastId=${PodcastId}&StartRowIndex=1&PageSize=100`, false)
         ])
             .pipe(map(r => {
                 return ({
-                    podcasts: r[0]
+                    podcasts: r[0],
+                    counts: r[1],
+                    graph: r[2],
+                    comments: r[3]
                 })
             }))
     }

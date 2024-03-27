@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { first } from 'rxjs';
 import { CommonService } from 'src/app/services/common.service';
-
 export interface posts {
   PodcastId: number
   Title: string
@@ -11,7 +10,6 @@ export interface posts {
   PodcastURL: string
   playing: boolean
 }
-
 @Component({
   selector: 'app-podcastdetails',
   templateUrl: './podcastdetails.component.html',
@@ -22,6 +20,18 @@ export class PodcastdetailsComponent implements OnInit {
   public podCast: any = null;
   public selectedPodcastURL: string | undefined;
   private cleartimer: any;
+  public dashList = [
+    // { name: "Total Views", count: 0, bg: 'bg-secondary', image_icon: 'podcast' },
+    // { name: "Comments", count: 0, bg: 'bg-info', image_icon: 'group' },
+    // { name: "Total Likes", count: 0, bg: 'bg-danger', image_icon: 'dashboard' },
+    // { name: "Users", count: 0, bg: 'bg-success', image_icon: 'category' }
+    { name: "Total Views", count: 0, bg: 'bg-primary', image_icon: 'podcast' },
+    { name: "Comments", count: 0, bg: 'bg-primary', image_icon: 'group' },
+    { name: "Total Likes", count: 0, bg: 'bg-primary', image_icon: 'dashboard' },
+    { name: "Users", count: 0, bg: 'bg-primary', image_icon: 'category' }
+  ]
+  public graphPoints: any;
+  public comments: any;
   constructor(
     private ActivateRoute: ActivatedRoute,
     public CF: CommonService
@@ -35,9 +45,17 @@ export class PodcastdetailsComponent implements OnInit {
         }
         this.podCast = response['service']['podcasts']['data']['Data'];
         this.breadcrumbs.push({ title: this.podCast['Title'], link: '' });
+        const { TotalViews, TotalLikes, TotalComments, TotalCommentedUsers } = response['service']['counts']['data']['Data'];
+        this.dashList = [
+          { name: "Total Views", count: TotalViews, bg: 'bg-primary', image_icon: 'podcast' },
+          { name: "Comments", count: TotalLikes, bg: 'bg-primary', image_icon: 'group' },
+          { name: "Total Likes", count: TotalComments, bg: 'bg-primary', image_icon: 'dashboard' },
+          { name: "Users", count: TotalCommentedUsers, bg: 'bg-primary', image_icon: 'category' }
+        ]
+        this.graphPoints = response['service']['graph']['data']['Data'];
+        this.comments = response['service']['comments']['data']['Data'];
       })
   }
-
   public playPodCast(data: posts) {
     data.playing = (data?.playing) ? false : true;
     this.selectedPodcastURL = undefined;

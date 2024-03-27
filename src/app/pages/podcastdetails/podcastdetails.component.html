@@ -4,7 +4,7 @@
             <div class="col-sm-12">
                 <breadcrumbs [breadcrumbs]="breadcrumbs"></breadcrumbs>
             </div>
-            <div class="col-md-11">
+            <div class="col-md-9">
                 <div class="card border-0">
                     <div class="row py-4">
                         <div class="col-md-4">
@@ -38,7 +38,39 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <ul id="main_list">
+                                <li *ngFor="let item of dashList">
+                                    <div class="card text-white" [ngClass]="item.bg">
+                                        <div class="card-body">
+                                            <div class="content">
+                                                <h5 class="text-white-50">{{item.name}}</h5>
+                                                <h1>{{item.count}}</h1>
+                                            </div>
+                                            <div class="icon_wrapper">
+                                                <img [src]="'../../../assets/images/png/'+ item.image_icon+'.png'" alt="icon"
+                                                    class="img-fluid" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="card-body p-1">
+                                    <app-charts [data]="graphPoints"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
+            <div class="col-md-3">
+               <div class="my-3" style="position: sticky;top: 65px;">
+                <app-comments [data]="comments"/>
+               </div>
             </div>
         </div>
     </div>

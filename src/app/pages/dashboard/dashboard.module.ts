@@ -6,6 +6,7 @@ import { DashboardComponent } from './dashboard.component';
 import { BreadcrumbsModule } from 'src/app/shared/breadcrumbs/breadcrumbs.module';
 import { DataTablesModule } from 'angular-datatables';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ChartsModule } from 'src/app/shared/charts/charts/charts.module';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     DashboardRoutingModule,
     BreadcrumbsModule,
     DataTablesModule,
-    NgbModule
+    NgbModule,
+    ChartsModule
   ]
 })
 export class DashboardModule { }
