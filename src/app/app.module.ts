@@ -10,6 +10,7 @@ import { LoaderComponent } from './shared/loader/loader.component';
 import { ToastrModule } from 'ngx-toastr';
 import { TokenInterceptorService } from './interceptor/Token.InterceptorService';
 import { BodyModule } from './shared/body/body.module';
+
 @NgModule({
   declarations: [
     AppComponent,

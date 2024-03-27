@@ -1,9 +1,101 @@
 <section id="dashboard">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-12 py-5">
-                <h1>Dashboard</h1>
-                <p>Under construction ....</p>
+            <div class="col-sm-12">
+                <breadcrumbs [breadcrumbs]="breadcrumbs"></breadcrumbs>
+            </div>
+            <div class="col-sm-12">
+                <ul id="main_list">
+                    <li *ngFor="let item of dashList">
+                        <div class="card text-white" [ngClass]="item.bg">
+                            <div class="card-body">
+                                <div class="content">
+                                    <h5 class="text-white-50">{{item.name}}</h5>
+                                    <h1>{{item.count}}</h1>
+                                </div>
+                                <div class="icon_wrapper">
+                                    <img [src]="'../../../assets/images/png/'+ item.image_icon+'.png'" alt="icon"
+                                        class="img-fluid" />
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-sm-12" id="chart_wrapper">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="my-2 title">User Activity (Last 30 days)</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="chart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row py-3">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header border border-bottom-0">
+                        <h5 class="my-2 title">Top Podcasts</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="responsiveTable w-100">
+                            <table class="table table-striped table-bordered mb-0 dataTable" datatable [dtOptions]="dtOptions">
+                                <thead>
+                                    <tr>
+                                        <th [width]="150">Title</th>
+                                        <th>Date Posted</th>
+                                        <th>Likes</th>
+                                        <th>Comments</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let x of topPodCasts">
+                                        <td>
+                                            <span [ngbTooltip]="x.PodcastTitle">
+                                                {{x.PodcastTitle | slice:0:12}}
+                                                <span *ngIf="x.PodcastTitle.length > 13">...</span>
+                                            </span>
+                                        </td>
+                                        <td>{{x.DatePosted | date}}</td>
+                                        <td>{{x.TotalLikes}}</td>
+                                        <td>{{x.TotalComments}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header border border-bottom-0">
+                        <h5 class="my-2 title">Top Users</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="responsiveTable w-100">
+                            <table class="table table-striped table-bordered mb-0 dataTable" datatable [dtOptions]="dtOptions">
+                                <thead>
+                                    <tr>
+                                        <th [width]="150">Name</th>
+                                        <th>Last Accessed</th>
+                                        <th>Likes</th>
+                                        <th>Comments</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let x of topUsers">
+                                        <td>{{x.UserName}}</td>
+                                        <td>{{x.LastAccessedDate | date}}</td>
+                                        <td>{{x.TotalLikes}}</td>
+                                        <td>{{x.TotalComments}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -9,7 +9,7 @@
                     <div class="row py-4">
                         <div class="col-md-4">
                             <div class="images text-center p-3">
-                                <img [src]="podCast['ThumbnailImageName']" class="img-fluid main_image" /> 
+                                <img [src]="podCast['ThumbnailImageUrl'] | sanitizer" class="img-fluid main_image" /> 
                             </div>
                         </div>
                         <div class="col-md-8">

@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { PodcastDetailsService } from './podcastdetails.service';
 import { BreadcrumbsModule } from 'src/app/shared/breadcrumbs/breadcrumbs.module';
 import { AudioplayerModule } from 'src/app/shared/audioplayer/audioplayer.module';
+import { SanitizerModule } from 'src/app/pipes/sanitizer/sanitizer.module';
 const routes: Routes = [{
   path: '',
   component: PodcastdetailsComponent,
@@ -20,7 +21,8 @@ const routes: Routes = [{
     CommonModule,
     RouterModule.forChild(routes),
     BreadcrumbsModule,
-    AudioplayerModule
+    AudioplayerModule,
+    SanitizerModule
   ]
 })
 export class PodcastdetailsModule { }
