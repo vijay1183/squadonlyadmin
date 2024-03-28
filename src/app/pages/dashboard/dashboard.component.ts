@@ -16,7 +16,7 @@ export class DashboardComponent implements OnInit {
   ]
   public topPodCasts: any = [];
   public topUsers: any = [];
-  public dtOptions = { ordering: true, dom: 'f', responsive: true };
+  public dtOptions = { ordering: false, dom: 'f', responsive: true };
   public graphPoints: any;
   constructor(
     private ActivateRoute: ActivatedRoute,
