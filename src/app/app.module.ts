@@ -10,6 +10,7 @@ import { LoaderComponent } from './shared/loader/loader.component';
 import { ToastrModule } from 'ngx-toastr';
 import { TokenInterceptorService } from './interceptor/Token.InterceptorService';
 import { BodyModule } from './shared/body/body.module';
+import { CacheInterceptor } from './interceptor/cache.interceptor';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,11 @@ import { BodyModule } from './shared/body/body.module';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CacheInterceptor,
       multi: true
     }
   ],

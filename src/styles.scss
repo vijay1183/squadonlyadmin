@@ -83,3 +83,81 @@
 .cursor {
     cursor: pointer;
 }
+.my_popup {
+
+    .modal-lg,
+    .modal-xl {
+      max-width: 1200px;
+    }
+  
+    .modal-dialog {
+      box-shadow: none;
+    }
+  
+    .modal-content {
+      box-shadow: 0 0.46875rem 2.1875rem rgba(4, 9, 20, 0.03),
+        0 0.9375rem 1.40625rem rgba(4, 9, 20, 0.03),
+        0 0.25rem 0.53125rem rgba(4, 9, 20, 0.05),
+        0 0.125rem 0.1875rem rgba(4, 9, 20, 0.03);
+    }
+  
+    // .modal-lg {
+    //     max-width: calc(100% - 50px);
+    //     transform: translate(25px, 20px) !important;
+    //     margin: 0 auto;
+    // }
+  }
+  
+  .close {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 30px;
+    height: 30px;
+    font-size: 48px;
+    z-index: 9999;
+    opacity: 0.6;
+    outline: none;
+    transition: 100ms linear;
+    border: none;
+    background: transparent;
+  
+    &:focus,
+    &:active {
+      opacity: 0.3 !important;
+    }
+  
+    &:hover {
+      opacity: 1 !important;
+    }
+  
+    &:before,
+    &:after {
+      content: "";
+      position: absolute;
+      top: 0px;
+      left: 15px;
+      height: 33px;
+      width: 2px;
+      background-color: #000;
+    }
+  
+    &:before {
+      transform: rotate(45deg);
+    }
+  
+    &:after {
+      transform: rotate(-45deg);
+    }
+  
+    &.text-white {
+  
+      &:before,
+      &:after {
+        background-color: #fff;
+      }
+    }
+  }
+  .error_bg {
+    background-color: rgb(205 92 92 / 30%);
+  }

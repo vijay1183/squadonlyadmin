@@ -5,6 +5,8 @@ import { RouterModule, Routes } from '@angular/router';
 // import { PodcastService } from './podcast.service';
 import { BreadcrumbsModule } from 'src/app/shared/breadcrumbs/breadcrumbs.module';
 import { DataTablesModule } from 'angular-datatables';
+import { EditformComponent } from './editform/editform.component';
+import { ReactiveFormsModule } from '@angular/forms';
 const routes: Routes = [{
   path: '',
   component: PodcastComponent,
@@ -14,13 +16,15 @@ const routes: Routes = [{
 
 @NgModule({
   declarations: [
-    PodcastComponent
+    PodcastComponent,
+    EditformComponent
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
     BreadcrumbsModule,
-    DataTablesModule
+    DataTablesModule,
+    ReactiveFormsModule
   ]
 })
 export class PodcastModule { }

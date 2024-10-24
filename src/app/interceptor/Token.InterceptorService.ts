@@ -19,8 +19,7 @@ export class TokenInterceptorService implements HttpInterceptor {
     if (!IgnoreUrls) {
       const getUser = localStorage.getItem(this.CF.Token);
       const user = (getUser) ? this.CF.Decrypt(JSON.parse(getUser), this.CF.Token) : null;
-      req = req.clone({
-        params: req.params.delete('cache'),
+      req = req.clone({        
         setHeaders: { Authorization: `Bearer ${user.access_token}` } });
       return next.handle(req)
     }

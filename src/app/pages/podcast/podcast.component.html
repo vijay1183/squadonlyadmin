@@ -28,3 +28,15 @@
         </div>
     </div>
 </section>
+
+
+<ng-template #formpopup let-c="close()" let-d="dismiss()">
+    <div class="modal-header justify-content-start">
+        <button type="button" class="close" (click)="(c); (d)"></button>
+        <div class="card-header-title font-size-lg text-capitalize fw-normal">
+            <small class="d-block text-muted">Edit </small>
+            <span class="text-uppercase fw-bold">PODCAST </span>
+        </div>
+    </div>
+    <app-editform [selectedPOD]="selectedPOD" (formSubmmited)="formSubmmited($event)"></app-editform>
+</ng-template>

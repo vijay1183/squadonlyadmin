@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { AfterViewInit, Component, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { BehaviorSubject, Subscription, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { CommonService } from 'src/app/services/common.service';
@@ -22,7 +22,7 @@ export class PodcastComponent implements OnInit, AfterViewInit, OnDestroy {
     {
       title: 'Action',
       render: (data: any, type: any, full: any) => {
-        return `<button type="button" class="btn btn-sm btn-success text-white" data-podcast="${full.PodcastId}">Details</button>`;
+        return `<button type="button" class="btn btn-sm btn-success text-white" data-podcast="${full?.PodcastId}">Details</button> <button type="button" class="btn btn-sm btn-primary text-white px-4" data-edit="${full?.PodcastId}">Edit</button>`;
       }
     }
   ];
@@ -42,7 +42,7 @@ export class PodcastComponent implements OnInit, AfterViewInit, OnDestroy {
   public triggerTable: boolean = false;
   private searchText$ = new BehaviorSubject<string>('');
   private listenerFn = () => { };
-
+  private rowRecords = [];
   constructor(
     private API: WebapiService,
     private CF: CommonService,
@@ -53,6 +53,7 @@ export class PodcastComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dataTableAngular();
   }
   private dataTableAngular() {
+    this.triggerTable = false;
     let delayTimer = 0;
     const that = this;
     this.dtOptions['ajax'] = (dataTablesParameters: any, callback) => {
@@ -71,6 +72,7 @@ export class PodcastComponent implements OnInit, AfterViewInit, OnDestroy {
       )
         .subscribe((resp: any) => {
           delayTimer = 500;
+          this.rowRecords = resp.Data;
           callback({
             recordsTotal: resp.TotalCount,
             recordsFiltered: resp.TotalCount,
@@ -86,6 +88,17 @@ export class PodcastComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   ngAfterViewInit(): void {
     this.listenerFn = this.renderer.listen('document', 'click', (event) => {
+      if (event.target.hasAttribute("data-edit")) {
+        const ID = event.target.getAttribute("data-edit");
+        this.selectedPOD =this.rowRecords.filter((x:any)=> x['PodcastId'] === ID )[0];
+        this.CF.OpenPopup(this.formpopup, "my_popup");
+        return
+        // this.API.getApis(`GetPodCastById?PodcastId=${event.target.getAttribute("data-edit")}`).then((content) => {
+        //   this.CF.OpenPopup(this.formpopup, "my_popup");
+        //   this.selectedPOD = content['data']['Data'];
+        // });
+        // return
+      }
       if (event.target.hasAttribute("data-podcast")) {
         this.CF.GotoURLParam('/podcast', event.target.getAttribute("data-podcast"))
         // CALL TABLE TO REDRAW ROWS WITH NEW DATA
@@ -105,6 +118,14 @@ export class PodcastComponent implements OnInit, AfterViewInit, OnDestroy {
   //       dtInstance.draw();
   //     });
   // }
+  @ViewChild("formpopup", { static: false }) formpopup: ElementRef | undefined;
+  public formSubmmited(evt: any) {
+    // CALL TABLE TO REDRAW ROWS WITH NEW DATA
+    this.showTable = false;
+    this.triggerTable = true;
+    setTimeout(() => this.dataTableAngular(), 10);
+  }
+  public selectedPOD: any;
   ngOnDestroy() {
     if (this.apiSubcription) {
       this.apiSubcription.unsubscribe();

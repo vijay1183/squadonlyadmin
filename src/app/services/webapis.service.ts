@@ -21,7 +21,7 @@ export class WebapiService {
     try {
       return new Promise((resolve) => {
         const url = `https://squad-auth-dev.azurewebsites.net/connect/token`;
-        const body = 'grant_type=' + "password" + '&username=' + username + '&password=' + password + '&role=' + '2';
+        const body = 'grant_type=' + "password" + '&username=' + username + '&password=' + password + '&role=' + '1';
         const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded;');
         return this.Http.post<any>(url, body, { headers, responseType: 'json' })
           .pipe(
@@ -152,8 +152,8 @@ export class WebapiService {
       console.log(error);
     }
   }
-  public getAPI(servicepath: string) {
+  public getAPI(servicepath: string, cache: boolean = false) {
     const url = `${this.WebApi}/${servicepath}`;
-    return this.Http.get<any>(url, { responseType: 'json' })
+    return this.Http.get<any>(url, {params: new HttpParams().set('cache', cache), responseType: 'json' })
   }
 }
