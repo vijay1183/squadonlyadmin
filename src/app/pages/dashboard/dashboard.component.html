@@ -55,7 +55,7 @@
                                         <td>
                                             <span [ngbTooltip]="x.PodcastTitle">
                                                 {{x.PodcastTitle | slice:0:35}}
-                                                <span *ngIf="x.PodcastTitle.length > 36">...</span>
+                                                <span *ngIf="x.PodcastTitle?.length > 36">...</span>
                                             </span>
                                         </td>
                                         <td>{{x.DatePosted | date}}</td>
