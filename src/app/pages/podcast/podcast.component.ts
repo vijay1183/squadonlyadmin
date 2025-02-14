@@ -67,7 +67,7 @@ export class PodcastComponent implements OnInit, AfterViewInit, OnDestroy {
         debounceTime(delayTimer),
         distinctUntilChanged(),
         switchMap(() => {
-          return that.API.getAPI(`GetPodCasts?SearchValue=${typedValue}&StartRowIndex=${(dataTablesParameters['start'] / dataTablesParameters['length']) + 1}&PageSize=${dataTablesParameters['length']}`)
+          return that.API.getAPI(`GetPodcastsForAdmin?SearchValue=${typedValue}&StartRowIndex=${(dataTablesParameters['start'] / dataTablesParameters['length']) + 1}&PageSize=${dataTablesParameters['length']}`)
         })
       )
         .subscribe((resp: any) => {
