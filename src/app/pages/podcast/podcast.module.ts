@@ -7,6 +7,7 @@ import { BreadcrumbsModule } from 'src/app/shared/breadcrumbs/breadcrumbs.module
 import { DataTablesModule } from 'angular-datatables';
 import { EditformComponent } from './editform/editform.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NumtobooleanPipe } from './numtoboolean.pipe';
 const routes: Routes = [{
   path: '',
   component: PodcastComponent,
@@ -17,7 +18,8 @@ const routes: Routes = [{
 @NgModule({
   declarations: [
     PodcastComponent,
-    EditformComponent
+    EditformComponent,
+    NumtobooleanPipe
   ],
   imports: [
     CommonModule,

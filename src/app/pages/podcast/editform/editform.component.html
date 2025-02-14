@@ -1,6 +1,5 @@
 <form class="grid-form" novalidate [formGroup]="Form" autocomplete="off" (ngSubmit)="submit()" *ngIf="FormReset">
     <div class="modal-body">
-
         <fieldset>
             <div data-row-span="1">
                 <div data-field-span="1" [ngClass]="{'error_bg': submitted && Form.get('title')!.hasError('required')}">
@@ -12,7 +11,6 @@
                 </div>
             </div>
         </fieldset>
-
         <fieldset>
             <div data-row-span="1">
                 <div data-field-span="1" [ngClass]="{'error_bg': submitted && Form.get('description')!.hasError('required')}">
@@ -24,25 +22,49 @@
                 </div>
             </div>
         </fieldset>
-
         <fieldset>
             <div data-row-span="1" *ngIf=" Categories$ | async as response" class="border-0">
                 <div data-field-span="1" [ngClass]="{'error_bg': submitted && Form.get('podcastCategoryId')!.hasError('required')}" class="border-0">
                     <label class="required">Podcast Category</label>
                     <div class="icon-container">
                         <!-- <input type="number" formControlName="podcastCategoryId" /> -->
-
-                        <select class="custom-select" formControlName="podcastCategoryId" id="my_select">
+                        <select class="custom-select my_select" formControlName="podcastCategoryId">
                             <option value="{{item['PodcastCategoryId']}}" *ngFor="let item of response['Data']">
                               {{item['CategoryName']}} </option>
                           </select>
-
                         <i class="loader"></i>
                     </div>
                 </div>
             </div>
         </fieldset>
-
+        <fieldset>
+            <div data-row-span="1">
+                <div data-field-span="1" [ngClass]="{'error_bg': submitted && Form.get('isVerified')!.hasError('required')}">
+                    <label class="required">isVerified</label>
+                    <div class="icon-container">
+                        <select class="custom-select my_select" formControlName="isVerified" >
+                            <option [ngValue]="item['value']" *ngFor="let item of [{title: 'True', value: 1}, {title: 'False', value: 0}]">
+                              {{item['title']}} </option>
+                          </select>
+                        <i class="loader"></i>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <div data-row-span="1">
+                <div data-field-span="1" [ngClass]="{'error_bg': submitted && Form.get('status')!.hasError('required')}">
+                    <label class="required">Status</label>
+                    <div class="icon-container">
+                        <select class="custom-select my_select" formControlName="status" >
+                            <option [ngValue]="item['value']" *ngFor="let item of [{title: 'True', value: 1}, {title: 'False', value: 0}]">
+                              {{item['title']}} </option>
+                          </select>
+                        <i class="loader"></i>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
     </div>
     <div class="modal-footer justify-content-center">
         <button type="submit" class="btn btn-primary text-white px-5" [ngClass]="{ 'button--loading': success }"><span>Submit</span></button>

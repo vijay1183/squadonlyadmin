@@ -4,11 +4,12 @@ import { DataTableDirective } from 'angular-datatables';
 import { BehaviorSubject, Subscription, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { CommonService } from 'src/app/services/common.service';
 import { WebapiService } from 'src/app/services/webapis.service';
+import { NumtobooleanPipe } from './numtoboolean.pipe';
 @Component({
   selector: 'app-podcast',
   templateUrl: './podcast.component.html',
   styleUrls: ['./podcast.component.scss'],
-  providers: [DatePipe]
+  providers: [DatePipe, NumtobooleanPipe]
 })
 export class PodcastComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(DataTableDirective, { static: false }) datatableElement: any = DataTableDirective;
@@ -19,6 +20,8 @@ export class PodcastComponent implements OnInit, AfterViewInit, OnDestroy {
     { "title": "Published", "data": "PublishedDatetime", ngPipeInstance: this.pipeDateInstance, ngPipeArgs: ['mediumDate', 'MMM d, y'] },
     { "title": "Created", "data": "CreatedDatetime", ngPipeInstance: this.pipeDateInstance, ngPipeArgs: ['mediumDate', 'MMM d, y'] },
     { "title": "Updated", "data": "UpdatedDatetime", ngPipeInstance: this.pipeDateInstance, ngPipeArgs: ['mediumDate', 'MMM d, y'] },
+    { "title": "IsVerified", "data": "IsVerified", ngPipeInstance: this.NumtobooleanPipe },
+    { "title": "Status", "data": "Status", ngPipeInstance: this.NumtobooleanPipe },
     {
       title: 'Action',
       render: (data: any, type: any, full: any) => {
@@ -47,7 +50,8 @@ export class PodcastComponent implements OnInit, AfterViewInit, OnDestroy {
     private API: WebapiService,
     private CF: CommonService,
     private renderer: Renderer2,
-    private pipeDateInstance: DatePipe
+    private pipeDateInstance: DatePipe,
+    private NumtobooleanPipe: NumtobooleanPipe
   ) { }
   ngOnInit(): void {
     this.dataTableAngular();
@@ -90,7 +94,7 @@ export class PodcastComponent implements OnInit, AfterViewInit, OnDestroy {
     this.listenerFn = this.renderer.listen('document', 'click', (event) => {
       if (event.target.hasAttribute("data-edit")) {
         const ID = event.target.getAttribute("data-edit");
-        this.selectedPOD =this.rowRecords.filter((x:any)=> x['PodcastId'] === ID )[0];
+        this.selectedPOD = this.rowRecords.filter((x: any) => x['PodcastId'] === ID)[0];
         this.CF.OpenPopup(this.formpopup, "my_popup");
         return
         // this.API.getApis(`GetPodCastById?PodcastId=${event.target.getAttribute("data-edit")}`).then((content) => {

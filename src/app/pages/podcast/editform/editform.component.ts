@@ -16,7 +16,6 @@ export class EditformComponent implements OnInit {
   public success: boolean = false;
   public isUpdate: boolean = false;
   public FormReset: boolean = false;
-
   public Categories$: Observable<any> | undefined;
   constructor(
     public API: WebapiService,
@@ -31,7 +30,6 @@ export class EditformComponent implements OnInit {
       "title": this.selectedPOD['Title'],
       "description": this.selectedPOD['Description'],
       "podcastCategoryId": this.selectedPOD['PodcastCategoryId'],
-
       "code": this.selectedPOD['Code'],
       "publishedDatetime": this.selectedPOD['PublishedDatetime'],
       "goLiveDateTime": this.selectedPOD['GoLiveDateTime'],
@@ -56,18 +54,17 @@ export class EditformComponent implements OnInit {
       "goLiveDateTime": null,
       "source": "",
       "authorId": 0,
-      "status": "",
+      "status": 0,
       "isVerified": 0,
       "updatedBy": "80ED3024-BAEC-4E92-A80F-04906B3EE251",
       "podcastTagId": 0
     });
     setTimeout(() => this.FormReset = true, 0);
   }
-
   public submit() {
     this.submitted = true;
     if (!this.Form.invalid) {
-      const payload = this.Form.value;
+      const payload = this.Form.value;      
       this.success = true;
       const path = "UpdatePodcast";
       this.API.putApis(path, payload)
