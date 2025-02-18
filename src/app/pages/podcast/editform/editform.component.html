@@ -16,7 +16,7 @@
                 <div data-field-span="1" [ngClass]="{'error_bg': submitted && Form.get('description')!.hasError('required')}">
                     <label class="required">Description</label>
                     <div class="icon-container">
-                        <input type="text" formControlName="description" />
+                        <textarea  formControlName="description" rows="4" ></textarea>
                         <i class="loader"></i>
                     </div>
                 </div>

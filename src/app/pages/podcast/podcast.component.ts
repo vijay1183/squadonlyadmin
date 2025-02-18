@@ -4,12 +4,14 @@ import { DataTableDirective } from 'angular-datatables';
 import { BehaviorSubject, Subscription, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { CommonService } from 'src/app/services/common.service';
 import { WebapiService } from 'src/app/services/webapis.service';
-import { NumtobooleanPipe } from './numtoboolean.pipe';
+import { NumtobooleanPipe } from './pipes/numbertobolean/numtoboolean.pipe';
+import { ThumbnailsPipe } from './pipes/thumbnails/thumbnails.pipe';
+
 @Component({
   selector: 'app-podcast',
   templateUrl: './podcast.component.html',
   styleUrls: ['./podcast.component.scss'],
-  providers: [DatePipe, NumtobooleanPipe]
+  providers: [DatePipe, NumtobooleanPipe, ThumbnailsPipe]
 })
 export class PodcastComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(DataTableDirective, { static: false }) datatableElement: any = DataTableDirective;
@@ -17,10 +19,18 @@ export class PodcastComponent implements OnInit, AfterViewInit, OnDestroy {
   private columnDefs = [
     { "title": "Title", "data": "Title" },
     { "title": "Source", "data": "Source" },
-    { "title": "Published", "data": "PublishedDatetime", ngPipeInstance: this.pipeDateInstance, ngPipeArgs: ['mediumDate', 'MMM d, y'] },
+
     { "title": "Created", "data": "CreatedDatetime", ngPipeInstance: this.pipeDateInstance, ngPipeArgs: ['mediumDate', 'MMM d, y'] },
     { "title": "Updated", "data": "UpdatedDatetime", ngPipeInstance: this.pipeDateInstance, ngPipeArgs: ['mediumDate', 'MMM d, y'] },
     { "title": "IsVerified", "data": "IsVerified", ngPipeInstance: this.NumtobooleanPipe },
+    { "title": "Thumbnail", 
+
+      render: (data: any, type: any, full: any) => {
+        return `<img src="${full?.ThumbnailImageUrl}" style="width: 50px; height: 50px" />`;
+      }
+
+      // "data": "ThumbnailImageUrl", ngPipeInstance: this.ThumbnailsPipe 
+    },
     { "title": "Status", "data": "Status", ngPipeInstance: this.NumtobooleanPipe },
     {
       title: 'Action',
@@ -35,7 +45,7 @@ export class PodcastComponent implements OnInit, AfterViewInit, OnDestroy {
     lengthMenu: [10, 20, 30, 40, 50],
     pageLength: 10,
     autoWidth: false,
-    ordering: false,
+    ordering: true,
     searching: true,
     serverSide: true,
     processing: true
@@ -51,7 +61,8 @@ export class PodcastComponent implements OnInit, AfterViewInit, OnDestroy {
     private CF: CommonService,
     private renderer: Renderer2,
     private pipeDateInstance: DatePipe,
-    private NumtobooleanPipe: NumtobooleanPipe
+    private NumtobooleanPipe: NumtobooleanPipe,
+    private ThumbnailsPipe: ThumbnailsPipe
   ) { }
   ngOnInit(): void {
     this.dataTableAngular();
@@ -61,6 +72,7 @@ export class PodcastComponent implements OnInit, AfterViewInit, OnDestroy {
     let delayTimer = 0;
     const that = this;
     this.dtOptions['ajax'] = (dataTablesParameters: any, callback) => {
+      // console.log(dataTablesParameters)
       const typedValue = dataTablesParameters['search']['value'];
       this.searchText$.next(typedValue);
       // this.showTable = (dataTablesParameters['start'] !== 0 && typedValue.length !== 0);      
