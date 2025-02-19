@@ -23,7 +23,8 @@ export class PodcastComponent implements OnInit, AfterViewInit, OnDestroy {
     { "title": "Created", "data": "CreatedDatetime", ngPipeInstance: this.pipeDateInstance, ngPipeArgs: ['mediumDate', 'MMM d, y'] },
     { "title": "Updated", "data": "UpdatedDatetime", ngPipeInstance: this.pipeDateInstance, ngPipeArgs: ['mediumDate', 'MMM d, y'] },
     { "title": "IsVerified", "data": "IsVerified", ngPipeInstance: this.NumtobooleanPipe },
-    { "title": "Thumbnail", 
+    {
+      "title": "Thumbnail",
 
       render: (data: any, type: any, full: any) => {
         return `<img src="${full?.ThumbnailImageUrl}" style="width: 50px; height: 50px" />`;
@@ -72,7 +73,10 @@ export class PodcastComponent implements OnInit, AfterViewInit, OnDestroy {
     let delayTimer = 0;
     const that = this;
     this.dtOptions['ajax'] = (dataTablesParameters: any, callback) => {
-      // console.log(dataTablesParameters)
+      let SortColumn = this.columnDefs[dataTablesParameters['order'][0]['column']]['data'];
+      if (!SortColumn) {
+        SortColumn = this.columnDefs[0]['data'];        
+      }
       const typedValue = dataTablesParameters['search']['value'];
       this.searchText$.next(typedValue);
       // this.showTable = (dataTablesParameters['start'] !== 0 && typedValue.length !== 0);      
@@ -83,7 +87,7 @@ export class PodcastComponent implements OnInit, AfterViewInit, OnDestroy {
         debounceTime(delayTimer),
         distinctUntilChanged(),
         switchMap(() => {
-          return that.API.getAPI(`GetPodcastsForAdmin?SearchValue=${typedValue}&StartRowIndex=${(dataTablesParameters['start'] / dataTablesParameters['length']) + 1}&PageSize=${dataTablesParameters['length']}`)
+          return that.API.getAPI(`GetPodcastsForAdmin?SearchValue=${typedValue}&StartRowIndex=${(dataTablesParameters['start'] / dataTablesParameters['length']) + 1}&PageSize=${dataTablesParameters['length']}&SortColumn=${SortColumn}&SortType=${dataTablesParameters['order'][0]['dir']}`)
         })
       )
         .subscribe((resp: any) => {

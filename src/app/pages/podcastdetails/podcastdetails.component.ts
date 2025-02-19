@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { first } from 'rxjs';
 import { CommonService } from 'src/app/services/common.service';
+import { WebapiService } from 'src/app/services/webapis.service';
 export interface posts {
   PodcastId: number
   Title: string
@@ -32,9 +33,11 @@ export class PodcastdetailsComponent implements OnInit {
   ]
   public graphPoints: any;
   public comments: any;
+  private PodcastId: any;
   constructor(
     private ActivateRoute: ActivatedRoute,
-    public CF: CommonService
+    public CF: CommonService,
+    private API: WebapiService
   ) { }
   ngOnInit(): void {
     this.ActivateRoute.data
@@ -43,6 +46,7 @@ export class PodcastdetailsComponent implements OnInit {
         if (!response['service']['podcasts']['status']) {
           return this.CF.GotoURL('/podcast');
         }
+        this.PodcastId = response['service']['PodcastId'];
         this.podCast = response['service']['podcasts']['data']['Data'];
         this.breadcrumbs.push({ title: this.podCast['Title'], link: '' });
         const { TotalViews, TotalLikes, TotalComments, TotalCommentedUsers } = response['service']['counts']['data']['Data'];
@@ -65,5 +69,14 @@ export class PodcastdetailsComponent implements OnInit {
     if (data.playing) {
       this.cleartimer = setTimeout(() => this.selectedPodcastURL = data.PodcastURL, 100);
     }
+  }
+
+  public fileuploads(evt: any) {
+    this.CF.isSpinnerVisible = true;
+    this.API.getApis(`GetPodCastById?PodcastId=${this.PodcastId}`, false).then(response => {      
+      this.podCast = response['data']['Data'];
+      this.CF.isSpinnerVisible = false; 
+    })
+      
   }
 }

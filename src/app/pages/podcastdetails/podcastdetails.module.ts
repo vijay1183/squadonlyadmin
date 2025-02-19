@@ -8,6 +8,7 @@ import { AudioplayerModule } from 'src/app/shared/audioplayer/audioplayer.module
 import { SanitizerModule } from 'src/app/pipes/sanitizer/sanitizer.module';
 import { ChartsModule } from 'src/app/shared/charts/charts/charts.module';
 import { CommentsModule } from 'src/app/shared/comments/comments/comments.module';
+import { FileuploadModule } from 'src/app/shared/fileupload/fileupload.module';
 const routes: Routes = [{
   path: '',
   component: PodcastdetailsComponent,
@@ -26,7 +27,8 @@ const routes: Routes = [{
     AudioplayerModule,
     SanitizerModule,
     ChartsModule,
-    CommentsModule
+    CommentsModule,
+    FileuploadModule
   ]
 })
 export class PodcastdetailsModule { }

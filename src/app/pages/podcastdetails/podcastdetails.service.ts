@@ -22,7 +22,8 @@ export class PodcastDetailsService {
                     podcasts: r[0],
                     counts: r[1],
                     graph: r[2],
-                    comments: r[3]
+                    comments: r[3],
+                    PodcastId
                 })
             }))
     }

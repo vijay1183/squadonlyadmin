@@ -43,7 +43,7 @@
                     <label class="required">isVerified</label>
                     <div class="icon-container">
                         <select class="custom-select my_select" formControlName="isVerified" >
-                            <option [ngValue]="item['value']" *ngFor="let item of [{title: 'True', value: 1}, {title: 'False', value: 0}]">
+                            <option [ngValue]="item['value']" *ngFor="let item of [{title: 'True', value: true}, {title: 'False', value: false}]">
                               {{item['title']}} </option>
                           </select>
                         <i class="loader"></i>
@@ -57,7 +57,7 @@
                     <label class="required">Status</label>
                     <div class="icon-container">
                         <select class="custom-select my_select" formControlName="status" >
-                            <option [ngValue]="item['value']" *ngFor="let item of [{title: 'True', value: 1}, {title: 'False', value: 0}]">
+                            <option [ngValue]="item['value']" *ngFor="let item of [{title: 'True', value: true}, {title: 'False', value: false}]">
                               {{item['title']}} </option>
                           </select>
                         <i class="loader"></i>

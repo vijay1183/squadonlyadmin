@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { CommonService } from './common.service';
-import { map, mergeMap, of, switchMap, tap } from 'rxjs';
+import { map, mergeMap, Observable, of, switchMap, tap } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -155,5 +155,20 @@ export class WebapiService {
   public getAPI(servicepath: string, cache: boolean = false) {
     const url = `${this.WebApi}/${servicepath}`;
     return this.Http.get<any>(url, {params: new HttpParams().set('cache', cache), responseType: 'json' })
+  }
+
+  public UploadFile(file: any, podcastId: string): Observable<any> {
+    const formData = new FormData();
+    const headers = new HttpHeaders({ 'ngsw-bypass': '' });
+    formData.append('podcastId', podcastId);
+    formData.append('fileUpload', file);
+    const url = `${this.WebApi}/AddPodcastThumbnail`;
+    const config: any = {
+      reportProgress: true,
+      observe: 'events',
+      responseType: "json",
+      headers: headers
+    }
+    return this.Http.put(url, formData, config);
   }
 }

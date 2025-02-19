@@ -1,0 +1,15 @@
+<h6 class="d-block mb-3" style="font-size: 14px;font-weight: bolder;" *ngIf="title && title.length > 0">{{title}}</h6>
+<div class="file-area" [ngClass]="{'disabled': progress !== 0}"><input type="file" (change)="uploadImg($event)"
+        accept="image/*" #fileuploadDiv></div>
+<div class="progress progress-bar progress-bar-animated progress-bar-info progress-bar-striped mt-4" role="progressbar" attr.aria-valuenow="{{ progress }}"
+    aria-valuemin="0" aria-valuemax="100" [ngStyle]="{ width: progress + '%' }" [hidden]="progress === 0">{{ progress
+    }}%</div>
+<ng-container>
+    <ul class="imgs">
+        <li *ngFor="let uploadedImage of uploadedImages">
+            <img [src]="uploadedImage['imageData'] || uploadedImage['url']" class="img-fluid"
+                (error)="'./assets/images/errorimage.png'" (click)="DownloadFile(uploadedImage)">
+            <button type="button" class="btn btn-sm btn-danger d-block my-2" (click)="Delete(uploadedImage)">Delete</button>
+        </li>
+    </ul>
+</ng-container>

@@ -54,8 +54,8 @@ export class EditformComponent implements OnInit {
       "goLiveDateTime": null,
       "source": "",
       "authorId": 0,
-      "status": 0,
-      "isVerified": 0,
+      "status": false,
+      "isVerified": false,
       "updatedBy": "80ED3024-BAEC-4E92-A80F-04906B3EE251",
       "podcastTagId": 0
     });
@@ -64,7 +64,10 @@ export class EditformComponent implements OnInit {
   public submit() {
     this.submitted = true;
     if (!this.Form.invalid) {
-      const payload = this.Form.value;      
+      let rawPayload = this.Form.value;
+      rawPayload['isVerified'] = Number(rawPayload['isVerified'])
+      rawPayload['status'] = Number(rawPayload['status'])
+      const payload = rawPayload;      
       this.success = true;
       const path = "UpdatePodcast";
       this.API.putApis(path, payload)
