@@ -5,13 +5,13 @@ import { BehaviorSubject, Subscription, debounceTime, distinctUntilChanged, swit
 import { CommonService } from 'src/app/services/common.service';
 import { WebapiService } from 'src/app/services/webapis.service';
 import { NumtobooleanPipe } from './pipes/numbertobolean/numtoboolean.pipe';
-import { ThumbnailsPipe } from './pipes/thumbnails/thumbnails.pipe';
+// import { ThumbnailsPipe } from './pipes/thumbnails/thumbnails.pipe';
 
 @Component({
   selector: 'app-podcast',
   templateUrl: './podcast.component.html',
   styleUrls: ['./podcast.component.scss'],
-  providers: [DatePipe, NumtobooleanPipe, ThumbnailsPipe]
+  providers: [DatePipe, NumtobooleanPipe]
 })
 export class PodcastComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(DataTableDirective, { static: false }) datatableElement: any = DataTableDirective;
@@ -63,7 +63,7 @@ export class PodcastComponent implements OnInit, AfterViewInit, OnDestroy {
     private renderer: Renderer2,
     private pipeDateInstance: DatePipe,
     private NumtobooleanPipe: NumtobooleanPipe,
-    private ThumbnailsPipe: ThumbnailsPipe
+    // private ThumbnailsPipe: ThumbnailsPipe
   ) { }
   ngOnInit(): void {
     this.dataTableAngular();
@@ -75,7 +75,7 @@ export class PodcastComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dtOptions['ajax'] = (dataTablesParameters: any, callback) => {
       let SortColumn = this.columnDefs[dataTablesParameters['order'][0]['column']]['data'];
       if (!SortColumn) {
-        SortColumn = this.columnDefs[0]['data'];        
+        SortColumn = this.columnDefs[0]['data'];
       }
       const typedValue = dataTablesParameters['search']['value'];
       this.searchText$.next(typedValue);
@@ -87,11 +87,11 @@ export class PodcastComponent implements OnInit, AfterViewInit, OnDestroy {
         debounceTime(delayTimer),
         distinctUntilChanged(),
         switchMap(() => {
-          return that.API.getAPI(`GetPodcastsForAdmin?SearchValue=${typedValue}&StartRowIndex=${(dataTablesParameters['start'] / dataTablesParameters['length']) + 1}&PageSize=${dataTablesParameters['length']}&SortColumn=${SortColumn}&SortType=${dataTablesParameters['order'][0]['dir']}`)
+          return that.API.getAPI(`GetPodcastsForAdmin?SearchValue=${typedValue}&StartRowIndex=${(dataTablesParameters['start'] / dataTablesParameters['length']) + 1}&PageSize=${dataTablesParameters['length']}&SortColumn=${SortColumn}&SortType=${dataTablesParameters['order'][0]['dir']}&Status=${(this.selectedFilterValue === 'null') ? '' : (this.selectedFilterValue === 'true') ? true : false}`)
         })
       )
         .subscribe((resp: any) => {
-          delayTimer = 500;
+          delayTimer = 750;
           this.rowRecords = resp.Data;
           callback({
             recordsTotal: resp.TotalCount,
@@ -151,5 +151,13 @@ export class PodcastComponent implements OnInit, AfterViewInit, OnDestroy {
       this.apiSubcription.unsubscribe();
     }
     this.listenerFn();
+  }
+
+  public selectedFilterValue: string = 'null';
+  public onFilterChange(evt: any) {
+    // CALL TABLE TO REDRAW ROWS WITH NEW DATA
+    this.showTable = false;
+    this.triggerTable = true;
+    setTimeout(() => this.dataTableAngular(), 10);
   }
 }

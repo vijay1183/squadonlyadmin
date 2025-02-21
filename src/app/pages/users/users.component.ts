@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { AfterViewInit, Component, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, debounceTime, distinctUntilChanged, Subscription, switchMap } from 'rxjs';
 import { WebapiService } from 'src/app/services/webapis.service';
 import { BooleanpipePipe } from './booleanpipe.pipe';
 @Component({
@@ -36,12 +36,14 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
     lengthMenu: [10, 20, 30, 40, 50],
     serverSide: true,
     processing: true,
-    ordering: false,
+    ordering: true,
     columns: this.columnDefs,
-    dom: 'ltipr'
+    // dom: 'ltipr'
   };
   private apiSubcription: Subscription | undefined;
   public showTable: boolean = false;
+  public triggerTable: boolean = false;
+  private searchText$ = new BehaviorSubject<string>('');
   constructor(
     private API: WebapiService,
     private pipeDateInstance: DatePipe,
@@ -49,23 +51,37 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
     private renderer: Renderer2
   ) { }
   ngOnInit(): void {
+    this.triggerTable = false;
+    let delayTimer = 0;
     const that = this;
     this.dtOptions['ajax'] = (dataTablesParameters: any, callback) => {
+      let SortColumn = this.columnDefs[dataTablesParameters['order'][0]['column']]['data'];
+      if (!SortColumn) {
+        SortColumn = this.columnDefs[0]['data'];
+      }      
+      const typedValue = dataTablesParameters['search']['value'];
+      this.searchText$.next(typedValue);
       if (that.apiSubcription) {
         that.apiSubcription.unsubscribe();
       }
-      that.apiSubcription = that.API.getAPI(`GetUsers?StartRowIndex=${(dataTablesParameters['start'] / dataTablesParameters['length']) + 1}&PageSize=${dataTablesParameters['length']}`)
-        .subscribe(resp => {
-          callback({
-            recordsTotal: resp.TotalCount,
-            recordsFiltered: resp.TotalCount,
-            data: resp.Data
-          });
-          this.showTable = true;
+      that.apiSubcription = that.searchText$.pipe(
+        debounceTime(delayTimer),
+        distinctUntilChanged(),
+        switchMap(() => {
+          return that.API.getAPI(`GetUsers?SearchValue=${typedValue}&StartRowIndex=${(dataTablesParameters['start'] / dataTablesParameters['length']) + 1}&PageSize=${dataTablesParameters['length']}&SortColumn=${SortColumn}&SortType=${dataTablesParameters['order'][0]['dir']}`)
+        })
+      ).subscribe(resp => {
+        delayTimer = 750;
+        callback({
+          recordsTotal: resp.TotalCount,
+          recordsFiltered: resp.TotalCount,
+          data: resp.Data
         });
+        this.showTable = true;
+      });
     };
     this.dtOptions['rowCallback'] = (row, data: any) => {      
-      if(data['IsActive'] === 0){
+      if (data['IsActive'] === 0) {
         $(row).addClass('deactivated');
       }
     }

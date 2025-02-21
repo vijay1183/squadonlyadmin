@@ -6,7 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { BreadcrumbsModule } from 'src/app/shared/breadcrumbs/breadcrumbs.module';
 import { DataTablesModule } from 'angular-datatables';
 import { EditformComponent } from './editform/editform.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NumtobooleanPipe } from './pipes/numbertobolean/numtoboolean.pipe';
 
 const routes: Routes = [{
@@ -27,7 +27,8 @@ const routes: Routes = [{
     RouterModule.forChild(routes),
     BreadcrumbsModule,
     DataTablesModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class PodcastModule { }
