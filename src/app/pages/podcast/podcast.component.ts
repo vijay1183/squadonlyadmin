@@ -153,7 +153,7 @@ export class PodcastComponent implements OnInit, AfterViewInit, OnDestroy {
     this.listenerFn();
   }
 
-  public selectedFilterValue: string = 'null';
+  public selectedFilterValue: string = 'true';
   public onFilterChange(evt: any) {
     // CALL TABLE TO REDRAW ROWS WITH NEW DATA
     this.showTable = false;
